@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Czyszczenie danych
 
-W tym rozdziale...
+W tym rozdziale....
 
 
 ### Odstające dane

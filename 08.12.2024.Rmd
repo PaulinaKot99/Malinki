@@ -1,0 +1,94 @@
+---
+title: ""
+date: "`r Sys.Date()`"
+output:
+  rmdformats::downcute:
+    self_contained: true
+    default_style: "light"
+    downcute_theme: "default"
+---
+
+
+```{r setup, include=FALSE}
+## Global options
+knitr::opts_chunk$set(cache = TRUE)
+library(readr)
+sklep_rowerowy <- read_csv("sklep_rowerowy.csv")
+```
+
+
+#Pakiet NANIAR do analizowania braków danych
+```{r}
+install.packages("naniar")
+library(naniar)
+```
+
+# Zliczanie całkowitej liczby NA
+```{r}
+n_miss(sklep_rowerowy)
+```
+# Zliczanie całkowitej liczby kompletnych wartości
+```{r}
+n_complete(sklep_rowerowy)
+``` 
+
+# Procent braków
+```{r}
+prop_miss(sklep_rowerowy)
+```
+# Tabela podsumowująca NA
+```{r}
+miss_var_summary(sklep_rowerowy)
+```
+
+# Wizualizacja NA
+```{r}
+vis_miss(sklep_rowerowy)
+```
+
+
+#Wizualizacja ogólnej liczby NA
+
+```{r}
+cluster = TRUE
+sort_miss = TRUE 
+gg_miss_fct(sklep_rowerowy)
+```
+
+
+# Instalujemy pakiety
+```{r}
+install.packages("tidyverse")
+install.packages("dklookr")
+install.packages("editrules") #reguły 
+install.packages("VIM")
+install.packages("validate")
+
+library(tidyverse)
+library(dklookr)
+library(editrules) #reguły
+library(VIM)
+library(validate)
+attach(dane)
+```
+
+#Reguły:
+```{r}
+reguly <- editset(c( 
+  "wiek\>=25", 
+  "wiek\<=89",
+  "dochod\>=10000" ))
+```
+
+#Walidacja:
+```{r}
+summary(violatedEdits(reguly,dane))
+bledy <- violatedEdits(refuly,dane)
+plot(bledy)
+```
+
+#Poprawiam błędy w danych
+```{r}
+dane[localizeErrors(reguly,dane)$adapt] <- NA
+```
+

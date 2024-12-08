@@ -52,43 +52,45 @@ vis_miss(sklep_rowerowy)
 ```{r}
 cluster = TRUE
 sort_miss = TRUE 
-gg_miss_fct(sklep_rowerowy)
+gg_miss_fct(sklep_rowerowy, Gender)
 ```
 
 
 # Instalujemy pakiety
-```{r}
-install.packages("tidyverse")
-install.packages("dklookr")
-install.packages("editrules") #reguły 
-install.packages("VIM")
-install.packages("validate")
+```{r include=FALSE}
+if(!require("tidyverse")) install.packages("tidyverse")
+if(!require("dlookr")) install.packages("dlookr")
+if(!require("editrules")) install.packages("editrules") #reguły 
+if(!require("VIM")) install.packages("VIM")
+if(!require("validate")) install.packages("validate")
 
 library(tidyverse)
-library(dklookr)
+library(dlookr)
 library(editrules) #reguły
 library(VIM)
 library(validate)
-attach(dane)
 ```
 
 #Reguły:
 ```{r}
 reguly <- editset(c( 
-  "wiek\>=25", 
-  "wiek\<=89",
-  "dochod\>=10000" ))
+  "Age>=30",
+  "Age<=50",
+  "Income>=30000" ))
 ```
 
 #Walidacja:
 ```{r}
-summary(violatedEdits(reguly,dane))
-bledy <- violatedEdits(refuly,dane)
+summary(violatedEdits(reguly,sklep_rowerowy))
+bledy <- violatedEdits(reguly,sklep_rowerowy)
 plot(bledy)
+
+sklep_rowerowy %>% 
+  filter(Age > 50)
 ```
 
 #Poprawiam błędy w danych
 ```{r}
-dane[localizeErrors(reguly,dane)$adapt] <- NA
+sklep_rowerowy[localizeErrors(reguly,sklep_rowerowy)$adapt] <- NA
 ```
 

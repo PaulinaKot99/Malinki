@@ -1,0 +1,25 @@
+---
+title: "Raport"
+author: "ja"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Czyszczenie danych
+
+W tym rozdziale....
+
+
+### Odstające dane
+
+
+### Brakujące dane
+
+
+
+
+

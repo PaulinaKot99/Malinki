@@ -54,7 +54,11 @@ cluster = TRUE
 sort_miss = TRUE 
 gg_miss_fct(sklep_rowerowy, Gender)
 ```
-
+# Przekroje NA
+```{r}
+gg_miss_upset(sklep_rowerowy,
+              nsets=53)
+```
 
 # Instalujemy pakiety
 ```{r include=FALSE}

@@ -6,8 +6,10 @@ output:
     self_contained: true
     default_style: "light"
     downcute_theme: "default"
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
-
 
 ```{r setup, include=FALSE}
 ## Global options
@@ -16,57 +18,73 @@ library(readr)
 sklep_rowerowy <- read_csv("sklep_rowerowy.csv")
 ```
 
-
 #Pakiet NANIAR do analizowania braków danych
+
 ```{r}
-install.packages("naniar")
+# install.packages("naniar")
 library(naniar)
 ```
 
 # Zliczanie całkowitej liczby NA
+
 ```{r}
 n_miss(sklep_rowerowy)
 ```
+
 # Zliczanie całkowitej liczby kompletnych wartości
+
 ```{r}
 n_complete(sklep_rowerowy)
-``` 
+```
 
 # Procent braków
+
 ```{r}
 prop_miss(sklep_rowerowy)
 ```
+
 # Tabela podsumowująca NA
+
 ```{r}
 miss_var_summary(sklep_rowerowy)
 ```
 
 # Wizualizacja NA
+
+#obserwacje pokazuja wiersze w jakich sa braki
+
 ```{r}
 vis_miss(sklep_rowerowy)
 ```
 
-
-#Wizualizacja ogólnej liczby NA
+#Wizualizacja ogólnej liczby NA #gdyby wg płci się zrobiła zaleznośc, to
+bylyby braki na zolto, a tutaj nie ma #u nas nie bedzie za duzo widac,
+poniewaz mamy bardzo malo brakow
 
 ```{r}
 cluster = TRUE
 sort_miss = TRUE 
 gg_miss_fct(sklep_rowerowy, Gender)
 ```
+
 # Przekroje NA
+
 ```{r}
 gg_miss_upset(sklep_rowerowy,
               nsets=53)
 ```
 
+#brakuje wypelniania brakow- najpierw powinnismy sprawdzic czy sa bledy,
+jak nie ma, to wypelniamy braki, czyli kolejnosc jest u nas dobra
+
 # Instalujemy pakiety
+
 ```{r include=FALSE}
-if(!require("tidyverse")) install.packages("tidyverse")
-if(!require("dlookr")) install.packages("dlookr")
-if(!require("editrules")) install.packages("editrules") #reguły 
-if(!require("VIM")) install.packages("VIM")
-if(!require("validate")) install.packages("validate")
+#if(!require("tidyverse")) install.packages("tidyverse")
+#if(!require("dlookr")) install.packages("dlookr")
+#if(!require("editrules")) install.packages("editrules") #reguły 
+#if(!require("VIM")) install.packages("VIM")
+#if(!require("validate")) install.packages("validate")
 
 library(tidyverse)
 library(dlookr)
@@ -75,26 +93,49 @@ library(VIM)
 library(validate)
 ```
 
-#Reguły:
+#Reguły: dodac kilka regul tutaj #reguly do wszystkich numerycznych
+zmiennych dac
+
 ```{r}
 reguly <- editset(c( 
-  "Age>=30",
-  "Age<=50",
-  "Income>=30000" ))
+  "Age>=0",
+  "Age<=120",
+  "Income>=0"
+  ))
 ```
 
-#Walidacja:
+#dla tesktowych rowniez, ale inna formula
+
+#Walidacja: #nie ma nic na obrazku, poniewaz wszystkie reguly sa
+spelnione #zadnych naruszen regul,w pierwszym, gdyby cos bylo, to byloby
+podane w ktorych wierszach
+
 ```{r}
 summary(violatedEdits(reguly,sklep_rowerowy))
 bledy <- violatedEdits(reguly,sklep_rowerowy)
 plot(bledy)
 
-sklep_rowerowy %>% 
-  filter(Age > 50)
 ```
 
-#Poprawiam błędy w danych
+#Poprawiam błędy w danych #nie bylo zadnych bledow wiec nic nie poprawil
+
 ```{r}
 sklep_rowerowy[localizeErrors(reguly,sklep_rowerowy)$adapt] <- NA
 ```
 
+## Wypełnianie braków danych
+
+Ze względu na bardzo małą liczbę braków danych, imputacje można wykonać
+za pomocą średniej/ mediany albo metodą hot deck- wkleic kilka slow jaka
+to metoda
+
+```{r}
+sklep_rowerowy <- hotdeck(sklep_rowerowy)
+sum(is.na(sklep_rowerowy))
+```
+
+ta metoda probuje znalezc podobny wiersz, w ktorym mamy brak, przydatne
+przy masowych brakach ta druga funkcja pokazuje czy sa jeszcze jakies
+braki nowy rozdzial dla wizualizacji danych, to bedzie na zajeciach
+pokrywane- kto kupil rower, kim jest ta osoba, czy ma wyksztalcenie/
+dzieci, roznice i to w wykresach dodac pare slow komentarzy..

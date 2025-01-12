@@ -138,8 +138,4 @@ ta metoda probuje znalezc podobny wiersz, w ktorym mamy brak, przydatne
 przy masowych brakach ta druga funkcja pokazuje czy sa jeszcze jakies
 braki nowy rozdzial dla wizualizacji danych, to bedzie na zajeciach
 pokrywane- kto kupil rower, kim jest ta osoba, czy ma wyksztalcenie/
-<<<<<<< HEAD
 dzieci, roznice i to w wykresach dodac pare slow komentarzy..
-=======
-dzieci, roznice i to w wykresach dodac pare slow komentarzy
->>>>>>> e4d4908664587a3427a17b088987c7537097c961

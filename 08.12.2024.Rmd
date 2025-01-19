@@ -113,18 +113,33 @@ reguly <- editset(c(
 #reguły dodane Edyta
 
 #dla tesktowych rowniez, ale inna formula
-#dodane Edyta
+#dodane Edyta - stan cywilny i posiadacz domu 
 ```{r}
-install.packages("validate")
 library(validate)
 wynik_reguly<-check_that(sklep_rowerowy,Marital.status==Married,Income>=70000)
 wynik_reguly
 wynik_reguly2<-check_that(sklep_rowerowy,Gender==Male, Home.Owner==Yes)
 wynik_reguly2
 ```
+# dane z edukacja, posiadaniem roweru, poziomem wyksztalcenia i zawodem
+
+```{r}
+library(validate)
+wynik_reguly<-check_that(sklep_rowerowy,Region==Pacific,Purchased_Bike==Yes)
+wynik_reguly
+wynik_reguly2<-check_that(sklep_rowerowy,Education==Bachelors,Occupation==Professional)
+wynik_reguly2
+```
+# dane jako kobieta, edukacja, nie posiada domu, singiel
+```{r}
+library(validate)
+wynik_reguly<-check_that(sklep_rowerowy,Gender==Female,Education==Graduate_Degree)
+wynik_reguly
+wynik_reguly2<-check_that(sklep_rowerowy,Home_Owner==No,Marital.status==Single)
+wynik_reguly2
+```
 
 #Poprawiam błędy w danych #nie bylo zadnych bledow wiec nic nie poprawil
-
 ```{r}
 sklep_rowerowy[localizeErrors(reguly,sklep_rowerowy)$adapt] <- NA
 ```
@@ -157,18 +172,12 @@ czy kupił czy nie kupił rower
 i kim jesteś jak kupujesz, a kim jesteś jak nie kupujesz
 
 jakie masz dochody, ile masz km do pracy, wyksztalcenie, plec 
-
 ```{r}
 library(ggplot2)
 library(hrbrthemes)
 library(plotly)
 library(ISLR)
 library(tidyselect)
-install.packages(rtools)
 data("sklep_rowerowy")
-
-install.packages(rtools)
- 
-# Utwórz wykres ratingu (histogram):
-
+```
 

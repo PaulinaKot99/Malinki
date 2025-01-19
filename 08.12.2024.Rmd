@@ -161,8 +161,6 @@ braki nowy rozdzial dla wizualizacji danych, to bedzie na zajeciach
 pokrywane- kto kupil rower, kim jest ta osoba, czy ma wyksztalcenie/
 dzieci, roznice i to w wykresach dodac pare slow komentarzy..
 
-
-
 #Wizualizacja danych
 
 co rysować??
@@ -178,6 +176,34 @@ library(hrbrthemes)
 library(plotly)
 library(ISLR)
 library(tidyselect)
-data("sklep_rowerowy")
+library(readxl)
+view(sklep_rowerowy)
+
+ggplot(sklep_rowerowy, aes(x=`Commute.Distance`,fill=`Purchased.Bike`)) + 
+  geom_histogram(binwidth=30, color="blue") +
+  labs(title="Zależność odległości do pracy z posiadaniem roweru", x="odleglość dojazdu", y="Posiadanie roweru") +
+  theme_ipsum()
 ```
+# Utwórz wykres (histogram):
+```{r}
+p <- ggplot(sklep_rowerowy, aes(x=Commute.Distance,
+ y=Cars,
+ color=Purchased.Bike)) +
+ geom_point() +
+ geom_smooth(method = "lm", se = F) +
+ xlab("Commute.Distance") +
+ ylab("Cars") +
+ scale_color_discrete(name = "Czy posiada rower?") +
+ ylim(0,10) +
+ ggtitle("możliwość dojazdu rowerem") +
+ theme_light()
+plotly::ggplotly(p)
+
+```
+
+
+```{r}
+
+```
+
 

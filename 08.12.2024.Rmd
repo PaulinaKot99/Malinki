@@ -98,23 +98,29 @@ zmiennych dac
 
 ```{r}
 reguly <- editset(c( 
-  "Age>=0",
+  "Age>=1",
   "Age<=120",
-  "Income>=0"
+  "Income>=0",
+  "Children>=0",
+  "Children<=5",
+  "Cars>=0",
+  "Cars<=10", 
+  "Children>=0",
+  "Children<=5"
   ))
 ```
 
+#reguły dodane Edyta
+
 #dla tesktowych rowniez, ale inna formula
-
-#Walidacja: #nie ma nic na obrazku, poniewaz wszystkie reguly sa
-spelnione #zadnych naruszen regul,w pierwszym, gdyby cos bylo, to byloby
-podane w ktorych wierszach
-
+#dodane Edyta
 ```{r}
-summary(violatedEdits(reguly,sklep_rowerowy))
-bledy <- violatedEdits(reguly,sklep_rowerowy)
-plot(bledy)
-
+install.packages("validate")
+library(validate)
+wynik_reguly<-check_that(sklep_rowerowy,Marital.status==Married,Income>=70000)
+wynik_reguly
+wynik_reguly2<-check_that(sklep_rowerowy,Gender==Male, Home.Owner==Yes)
+wynik_reguly2
 ```
 
 #Poprawiam błędy w danych #nie bylo zadnych bledow wiec nic nie poprawil
@@ -139,3 +145,30 @@ przy masowych brakach ta druga funkcja pokazuje czy sa jeszcze jakies
 braki nowy rozdzial dla wizualizacji danych, to bedzie na zajeciach
 pokrywane- kto kupil rower, kim jest ta osoba, czy ma wyksztalcenie/
 dzieci, roznice i to w wykresach dodac pare slow komentarzy..
+
+
+
+#Wizualizacja danych
+
+co rysować??
+
+czy kupił czy nie kupił rower 
+
+i kim jesteś jak kupujesz, a kim jesteś jak nie kupujesz
+
+jakie masz dochody, ile masz km do pracy, wyksztalcenie, plec 
+
+```{r}
+library(ggplot2)
+library(hrbrthemes)
+library(plotly)
+library(ISLR)
+library(tidyselect)
+install.packages(rtools)
+data("sklep_rowerowy")
+
+install.packages(rtools)
+ 
+# Utwórz wykres ratingu (histogram):
+
+

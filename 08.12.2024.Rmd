@@ -177,16 +177,16 @@ library(plotly)
 library(ISLR)
 library(tidyselect)
 library(readxl)
-view(sklep_rowerowy)
-
-ggplot(sklep_rowerowy, aes(x=`Commute.Distance`,fill=`Purchased.Bike`)) + 
+library(janitor)
+sklep_rowerowy <- janitor::clean_names(sklep_rowerowy)
+ggplot(sklep_rowerowy, aes(x=`commute_distance`,fill=`purchased_bike`)) + 
   geom_histogram(binwidth=30, color="blue") +
   labs(title="Zależność odległości do pracy z posiadaniem roweru", x="odleglość dojazdu", y="Posiadanie roweru") +
   theme_ipsum()
 ```
 # Utwórz wykres (histogram):
 ```{r}
-p <- ggplot(sklep_rowerowy, aes(x=Commute.Distance,
+p <- ggplot(sklep_rowerowy, aes(x=Commute_Distance,
  y=Cars,
  color=Purchased.Bike)) +
  geom_point() +

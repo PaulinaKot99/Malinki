@@ -170,6 +170,19 @@ czy kupił czy nie kupił rower
 i kim jesteś jak kupujesz, a kim jesteś jak nie kupujesz
 
 jakie masz dochody, ile masz km do pracy, wyksztalcenie, plec 
+
+ciekawe przyklady 
+
+posiadanie domu vs wiek 
+liczba dzieci vs wiek 
+czy ma rower vs odleglosc 
+pensja vs wyksztalcenie mam
+wplywy vs 
+rower vs wiek 
+rower vs region 
+pensja vs rower 
+rower vs odleglosc 
+# dom vs wiek
 ```{r}
 library(ggplot2)
 library(hrbrthemes)
@@ -179,31 +192,72 @@ library(tidyselect)
 library(readxl)
 library(janitor)
 sklep_rowerowy <- janitor::clean_names(sklep_rowerowy)
-ggplot(sklep_rowerowy, aes(x=`commute_distance`,fill=`purchased_bike`)) + 
-  geom_histogram(binwidth=30, color="blue") +
-  labs(title="Zależność odległości do pracy z posiadaniem roweru", x="odleglość dojazdu", y="Posiadanie roweru") +
-  theme_ipsum()
+
+ggplot(sklep_rowerowy, aes(x=home_owner, y=age)) +
+ geom_boxplot() +
+ coord_flip()
+
 ```
-# Utwórz wykres (histogram):
+# Zależność wieku i zarobków:
 ```{r}
-p <- ggplot(sklep_rowerowy, aes(x=Commute_Distance,
- y=Cars,
- color=Purchased.Bike)) +
+ggplot(sklep_rowerowy, aes(x=income,
+ y=age)) +
  geom_point() +
- geom_smooth(method = "lm", se = F) +
- xlab("Commute.Distance") +
- ylab("Cars") +
- scale_color_discrete(name = "Czy posiada rower?") +
- ylim(0,10) +
- ggtitle("możliwość dojazdu rowerem") +
- theme_light()
-plotly::ggplotly(p)
+ xlab("zarobek") +
+ ylab("wiek")
+ggtitle("Zarobki w porównaniu do wieku")
 
 ```
 
+# liczba dzieci vs wiek 
+```{r}
+ggplot(sklep_rowerowy, aes(x=children,
+ y=age)) +
+ geom_point() +
+ xlab("liczba dzieci") +
+ ylab("wiek")
+ggtitle("Dzieci vs wiek")
+
+```
+#posiadanie domu w porównaniu do wieku
 
 ```{r}
+ggplot(sklep_rowerowy, aes(x=age,
+ y=home_owner)) +
+ geom_boxplot() +
+ xlab("wiek") +
+ ylab("czy posiada dom")
+ggtitle("Posiadanie domu w porównaniu do wieku")
+
+```
+#Zarobki vs poziom edukacji
+```{r}
+ggplot(sklep_rowerowy, aes(x=income,
+ y=education)) +
+ geom_boxplot() +
+ xlab("zarobki") +
+ ylab("poziom edukacji")
+ggtitle("zależność zarobków od poziomu edukacji")
+
+```
+# rower vs pensja
+```{r}
+ggplot(sklep_rowerowy, aes(x=income,
+ y=purchased_bike)) +
+ geom_boxplot() +
+ xlab("zarobki") +
+ ylab("liczba rowerów")
+ggtitle("zależność zarobków do posiadania rowerów")
 
 ```
 
+# rower vs region
+```{r}
+ggplot(sklep_rowerowy, aes(x=purchased_bike,
+ y=region)) +
+ geom_point() +
+ xlab("liczba rowerów") +
+ ylab("region")
+ggtitle("zależność posiadania rowerów od regionu")
+```
 

@@ -325,4 +325,30 @@ ggplot(dane_dojazd, aes(x = commute_distance, y = liczba, fill = purchased_bike)
   scale_fill_manual(values = c("Yes" = "yellow", "No" = "orange"), name = "Posiadanie roweru")
 ```
 
+#ilość osób zamęznych vs wiek
+```{r}
+library(ggplot2)
+library(hrbrthemes)
+library(plotly)
+library(ISLR) # for Credit data
+data("Credit")
+
+# Podziel zmienną Age na 3 przedziały wiekowe:
+Credit$AgeGroup <- cut(Credit$Age, breaks=c(20,40,60,100),
+                       labels=c("20-40", "40-60", "60-100"))
+
+ggplot(Credit, aes(x=AgeGroup, fill=Married)) + 
+  geom_bar(position="stack") +
+  labs(title="Liczba osób zamężnych w zależności od grupy wiekowej", x="Grupa wiekowa", y="Liczba osób") +
+  theme_classic()
+```
+
+#ilość osób zamęznych vs wiek- 2 metoda
+```{r}
+newdata <- c()
+ageGroups <- c(10, 20, 30, 40, 50, 60, 70, 80)
+for (ind in ageGroups){  newdata <- c(newdata, count(subset(Credit, Age >= ind & Age <= ind + 10 & Married == "No"))$n)
+}
+ggplot(data.frame(newdata), aes(x=ageGroups, y=newdata)) + geom_line()
+```
 

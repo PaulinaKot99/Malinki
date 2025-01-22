@@ -206,7 +206,6 @@ ggplot(sklep_rowerowy, aes(x=income,
  xlab("zarobek") +
  ylab("wiek")
 ggtitle("Zarobki w porównaniu do wieku")
-
 ```
 
 # liczba dzieci vs wiek 
@@ -250,14 +249,80 @@ ggplot(sklep_rowerowy, aes(x=income,
 ggtitle("zależność zarobków do posiadania rowerów")
 
 ```
+#dodane Julia
 
-# rower vs region
+#Wykres gęstości zarobków
 ```{r}
-ggplot(sklep_rowerowy, aes(x=purchased_bike,
- y=region)) +
- geom_point() +
- xlab("liczba rowerów") +
- ylab("region")
-ggtitle("zależność posiadania rowerów od regionu")
+ggplot(sklep_rowerowy, aes(x = income)) +
+  geom_density(alpha = 0.7, fill = "blue", color = "black") +
+  xlab("Zarobek") +
+  ylab("Gęstość") +
+  ggtitle("Rozkład zarobków") +
+  theme_minimal()
 ```
+
+
+# Grupowanie i zliczanie
+```{r}
+library(dplyr)
+
+dane_zliczone <- sklep_rowerowy %>%
+  group_by(region, purchased_bike) %>%
+  summarise(liczba = n())
+```
+
+#region vs liczba rowerów
+```{r}
+library(ggplot2)
+
+ggplot(dane_zliczone, aes(x = region, y = liczba, fill = purchased_bike)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  xlab("Region") +
+  ylab("Liczba osób") +
+  ggtitle("Liczba osób posiadających rowery w zależności od regionu") +
+  scale_fill_manual(values = c("Yes" = "blue", "No" = "red"), name = "Posiadanie roweru")
+```
+
+
+# Grupowanie według wieku i posiadania roweru, a następnie zliczanie
+```{r}
+library(dplyr)
+
+dane_wiek <- sklep_rowerowy %>%
+  group_by(age, purchased_bike) %>%
+  summarise(liczba = n(), .groups = "drop")
+```
+
+#wiek vs liczba rowerów
+```{r}
+library(ggplot2)
+
+ggplot(dane_wiek, aes(x = age, y = liczba, fill = purchased_bike)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  xlab("Wiek") +
+  ylab("Liczba osób") +
+  ggtitle("Liczba osób posiadających rowery w zależności od wieku") +
+  scale_fill_manual(values = c("Yes" = "green", "No" = "purple"), name = "Posiadanie roweru")
+```
+
+
+# Grupowanie i zliczanie według odległości dojazdu i posiadania roweru
+```{r}
+library(dplyr)
+
+dane_dojazd <- sklep_rowerowy %>%
+  group_by(commute_distance, purchased_bike) %>%
+  summarise(liczba = n(), .groups = "drop")
+```
+
+# rower vs odległość dojazdu do pracy
+```{r}
+ggplot(dane_dojazd, aes(x = commute_distance, y = liczba, fill = purchased_bike)) +
+  geom_bar(stat = "identity", position = "stack") +
+  xlab("Odległość dojazdu do pracy") +
+  ylab("Liczba osób") +
+  ggtitle("Liczba osób posiadających rowery w zależności od odległości dojazdu do pracy") +
+  scale_fill_manual(values = c("Yes" = "yellow", "No" = "orange"), name = "Posiadanie roweru")
+```
+
 

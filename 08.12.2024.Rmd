@@ -268,9 +268,11 @@ ggtitle("zależność zarobków do posiadania rowerów")
 ```
 #dodane Julia
 
-#Wykres gęstości zarobków- widac, ze nie jest to rozkład normalny- test Shapiro-wilka
+#Wykres gęstości zarobków- widac, ze nie jest to rozkład normalny- test Shapiro-wilka do normalnego rozkladu
 #p-value spr
 #zastanowic sie czy ponizsze jest potrzebne
+#spr jaki test statystyczny tu zrobic- z jakiego rozkladu pochodza te dane i takim testem sprawdzone
+
 ```{r}
 ggplot(sklep_rowerowy, aes(x = income)) +
   geom_density(alpha = 0.7, fill = "blue", color = "black") +
@@ -336,13 +338,19 @@ dane_dojazd <- sklep_rowerowy %>%
 
 # rower vs odległość dojazdu do pracy
 ```{r}
-ggplot(dane_dojazd, aes(x = commute_distance, y = liczba, fill = purchased_bike)) +
+library(ggplot2)
+library(forcats)
+
+ggplot(dane_dojazd, aes(x = factor(commute_distance, levels = sort(unique(commute_distance))), 
+                        y = liczba, fill = purchased_bike)) +
   geom_bar(stat = "identity", position = "stack") +
   xlab("Odległość dojazdu do pracy") +
   ylab("Liczba osób") +
   ggtitle("Liczba osób posiadających rowery w zależności od odległości dojazdu do pracy") +
-  scale_fill_manual(values = c("Yes" = "yellow", "No" = "orange"), name = "Posiadanie roweru")
+  scale_fill_manual(values = c("Yes" = "yellow", "No" = "orange"), name = "Posiadanie roweru") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Obrót etykiet dla lepszej czytelności
 ```
+
 
 #ilość osób zamęznych vs wiek
 ```{r}
@@ -362,17 +370,11 @@ ggplot(Credit, aes(x=AgeGroup, fill=Married)) +
   theme_classic()
 ```
 
-#ilość osób zamęznych vs wiek- 2 metoda
-```{r}
-newdata <- c()
-ageGroups <- c(10, 20, 30, 40, 50, 60, 70, 80)
-for (ind in ageGroups){  newdata <- c(newdata, count(subset(Credit, Age >= ind & Age <= ind + 10 & Married == "No"))$n)
-}
-ggplot(data.frame(newdata), aes(x=ageGroups, y=newdata)) + geom_line()
-```
-
 
 #wnioskowanie statystyczne- wyciągniecie wniosków na temat wszystkich posiadaczy rowerów
-
-
+#pod kazdym wykresem wnioski dla wykresu i uogolnienie dla populacji- spr tez enauczanie
+#mozna zmieniac czcionki jak w wordzie/ mozna popatrzec na dostepne funkcje
+#spr markdown na enauczaniu jak sie chunki wordowe dodaje
+#wykres w zaleznosci od ilosci dzieci
+#zrobic te wykresy dla kazdej danej- czy ma rower czy nie, lepiej wiecej niz mniej- pododawac
 

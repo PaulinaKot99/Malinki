@@ -44,6 +44,7 @@ prop_miss(sklep_rowerowy)
 ```
 
 # Tabela podsumowująca NA
+#to nie do wnioskowania, brakow danych nie wnioskujemy
 
 ```{r}
 miss_var_summary(sklep_rowerowy)
@@ -110,6 +111,9 @@ reguly <- editset(c(
   ))
 ```
 
+#np jesli jestes dzieckiem, to masz rower, masz ppnizej 3 lat, nie posiadasz roweru
+#jesli masz srednie dochody to prawd jestes posiadaczem roweru- wnioskowanie dla populacji np kraju, np mamy 40 mezczyzn i 30 z nich ma rower, to 70% ogolem jest posiadaczem roweru
+
 #reguły dodane Edyta
 
 #dla tesktowych rowniez, ale inna formula
@@ -146,20 +150,26 @@ sklep_rowerowy[localizeErrors(reguly,sklep_rowerowy)$adapt] <- NA
 
 ## Wypełnianie braków danych
 
-Ze względu na bardzo małą liczbę braków danych, imputacje można wykonać
-za pomocą średniej/ mediany albo metodą hot deck- wkleic kilka slow jaka
-to metoda
+#Ze względu na bardzo małą liczbę braków danych, imputacje można wykonać
+#za pomocą średniej/ mediany albo metodą hot deck- wkleic kilka slow jaka to metoda
+#srednia- dla danych bardziej zroznicowanych
 
 ```{r}
+
+#install.packages("hot.deck")
+#install.packages("VIM")
+library(VIM)
+library(hot.deck)
+
 sklep_rowerowy <- hotdeck(sklep_rowerowy)
 sum(is.na(sklep_rowerowy))
 ```
 
-ta metoda probuje znalezc podobny wiersz, w ktorym mamy brak, przydatne
-przy masowych brakach ta druga funkcja pokazuje czy sa jeszcze jakies
-braki nowy rozdzial dla wizualizacji danych, to bedzie na zajeciach
-pokrywane- kto kupil rower, kim jest ta osoba, czy ma wyksztalcenie/
-dzieci, roznice i to w wykresach dodac pare slow komentarzy..
+#ta metoda probuje znalezc podobny wiersz, w ktorym mamy brak, przydatne
+#przy masowych brakach ta druga funkcja pokazuje czy sa jeszcze jakies
+#braki nowy rozdzial dla wizualizacji danych, to bedzie na zajeciach
+#pokrywane- kto kupil rower, kim jest ta osoba, czy ma wyksztalcenie/
+#dzieci, roznice i to w wykresach dodac pare slow komentarzy..
 
 #Wizualizacja danych
 
@@ -181,7 +191,13 @@ wplywy vs
 rower vs wiek 
 rower vs region 
 pensja vs rower 
-rower vs odleglosc 
+rower vs odleglosc
+
+#wyogolnic we wnioskowaniu, np ze osoby zonate czesciej kupuja rower albo jaki wiek
+#jakby dane byly na srodku- to wiemy, ze nasze dane pochodza z rozkladu norm
+#na lewo pochodza z rozkladu prawo-skosnego, a na prawo, to z rozkladu lewo-skosnego
+#pudelko- lewa to 1szy kwartyl, po prawej 3 kwartyl/ srodkowa kreska to chyba mediana/ srednia- do spr na necie
+#kropki- obserwacje odstajace tzw outsiders- wygolnic, ze 80-90 latek rzadko jest wlascicielem roweru
 # dom vs wiek
 ```{r}
 library(ggplot2)
@@ -199,6 +215,7 @@ ggplot(sklep_rowerowy, aes(x=home_owner, y=age)) +
 
 ```
 # Zależność wieku i zarobków:
+#jak najwiecej informacji o tych rowerow
 ```{r}
 ggplot(sklep_rowerowy, aes(x=income,
  y=age)) +
@@ -251,7 +268,9 @@ ggtitle("zależność zarobków do posiadania rowerów")
 ```
 #dodane Julia
 
-#Wykres gęstości zarobków
+#Wykres gęstości zarobków- widac, ze nie jest to rozkład normalny- test Shapiro-wilka
+#p-value spr
+#zastanowic sie czy ponizsze jest potrzebne
 ```{r}
 ggplot(sklep_rowerowy, aes(x = income)) +
   geom_density(alpha = 0.7, fill = "blue", color = "black") +
@@ -271,7 +290,7 @@ dane_zliczone <- sklep_rowerowy %>%
   summarise(liczba = n())
 ```
 
-#region vs liczba rowerów
+#region vs liczba rowerów- takie wykresy porobic
 ```{r}
 library(ggplot2)
 
@@ -351,4 +370,9 @@ for (ind in ageGroups){  newdata <- c(newdata, count(subset(Credit, Age >= ind &
 }
 ggplot(data.frame(newdata), aes(x=ageGroups, y=newdata)) + geom_line()
 ```
+
+
+#wnioskowanie statystyczne- wyciągniecie wniosków na temat wszystkich posiadaczy rowerów
+
+
 

@@ -378,3 +378,8 @@ ggplot(Credit, aes(x=AgeGroup, fill=Married)) +
 #wykres w zaleznosci od ilosci dzieci
 #zrobic te wykresy dla kazdej danej- czy ma rower czy nie, lepiej wiecej niz mniej- pododawac
 
+
+```{r}
+
+```
+

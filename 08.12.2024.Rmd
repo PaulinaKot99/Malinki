@@ -378,8 +378,149 @@ ggplot(Credit, aes(x=AgeGroup, fill=Married)) +
 #wykres w zaleznosci od ilosci dzieci
 #zrobic te wykresy dla kazdej danej- czy ma rower czy nie, lepiej wiecej niz mniej- pododawac
 
+#dodane Julia 31/1/2025
+
+# Grupowanie i zliczanie
+```{r}
+library(dplyr)
+
+dane_zliczone <- sklep_rowerowy %>%
+  group_by(marital_status, purchased_bike) %>%
+  summarise(liczba = n())
+```
+
+#rower vs stan cywilny
+```{r}
+library(ggplot2)
+
+ggplot(dane_zliczone, aes(x = marital_status, y = liczba, fill = purchased_bike)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  xlab("Stan cywilny") +
+  ylab("Liczba osób") +
+  ggtitle("Ilość osób posiadających rower w zależności od stanu cywilnego") +
+  scale_fill_manual(values = c("Yes" = "pink", "No" = "white"), name = "Czy posiada rower?")
+```
+
+
+#rower vs płeć
+```{r}
+library(dplyr)
+library(ggplot2)
+
+# Przygotowanie danych do wykresu kołowego
+df_pie <- sklep_rowerowy %>%
+  group_by(gender, purchased_bike) %>%
+  summarise(count = n()) %>%
+  mutate(percentage = round(count / sum(count) * 100, 1))  # Zaokrąglamy do 1 miejsca
+
+# Tworzenie wykresu kołowego z etykietami procentowymi
+ggplot(df_pie, aes(x = "", y = percentage, fill = purchased_bike)) +
+  geom_bar(stat = "identity", width = 1, color = "white") +
+  coord_polar("y", start = 0) +  # Tworzymy wykres kołowy
+  facet_wrap(~gender) +  # Oddzielne koła dla każdej płci
+  geom_text(aes(label = paste0(percentage, "%")),  # Dodajemy procenty
+            position = position_stack(vjust = 0.5), size = 5, color = "white") +  
+  labs(title = "Procent osób posiadających rower w podziale na płeć", fill = "Czy posiada rower?") +
+  scale_fill_manual(values = c("Yes" = "#2E86C1", "No" = "#A93226")) +
+  theme_void()  # Usuwamy osie dla czystego wyglądu
+```
+
+
+
+rower vs posiadanie dzieci
+```{r}
+library(ggplot2)
+library(hrbrthemes)
+
+ggplot(sklep_rowerowy, aes(x = factor(children), fill = purchased_bike)) +
+  geom_bar(position = "dodge", width = 0.6) +
+  labs(title = "Czy posiadanie roweru zależy od liczby dzieci?",
+       x = "Liczba dzieci", y = "Liczba osób") +
+  scale_fill_manual(values = c("Yes" = "#00BFC4", "No" = "#F8766D"), 
+                    name = "Czy posiada rower?") +
+  theme_minimal(base_size = 14)
+```
+
 
 ```{r}
+library(dplyr)
 
+# Przygotowanie danych do wykresu kołowego
+df_pie <- sklep_rowerowy %>%
+  group_by(education, purchased_bike) %>%
+  summarise(count = n()) %>%
+  mutate(percentage = round(count / sum(count) * 100, 1))  # Zaokrąglamy do 1 miejsca
+
+# Tworzenie wykresu kołowego z etykietami procentowymi
+ggplot(df_pie, aes(x = "", y = percentage, fill = purchased_bike)) +
+  geom_bar(stat = "identity", width = 1, color = "white") +
+  coord_polar("y", start = 0) +  # Tworzymy wykres kołowy
+  facet_wrap(~education) +  # Osobne koła dla każdej grupy edukacyjnej
+  geom_text(aes(label = paste0(percentage, "%")),  
+            position = position_stack(vjust = 0.5), size = 5, color = "white") +  
+  labs(title = "Procent osób posiadających rower w zależności od poziomu edukacji", 
+       fill = "Czy posiada rower?") +
+  scale_fill_manual(values = c("Yes" = "gray", "No" = "purple")) +
+  theme_void() +
+  theme(strip.text = element_text(size = 12, face = "bold"))  # Lepsza czytelność
+```
+#rower vs zawód
+```{r}
+library(ggplot2)
+library(dplyr)
+library(ggmosaic)  # Dla wykresu mozaikowego
+
+
+ggplot(sklep_rowerowy, aes(x = Occupation, fill = Purchased.Bike)) +
+  geom_bar(position = "dodge") +
+  scale_fill_manual(values = c("Yes" = "salmon", "No" = "white")) +  # Zmiana kolorów
+  labs(title = "Ilość osób posiadających rower w zależności od zawodu", 
+       x = "Zawód", 
+       y = "Liczba osób", 
+       fill = "Czy kupił rower?") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+#rower vs posiadanie domu
+```{r}
+
+  group_by(home_owner, purchased_bike) %>%
+  summarise(count = n()) %>%
+  mutate(percentage = round(count / sum(count) * 100, 1))
+
+ggplot(df_pie, aes(x = "", y = percentage, fill = Purchased.Bike)) +
+  geom_bar(stat = "identity", width = 1, color = "white") +
+  coord_polar("y", start = 0) +
+  facet_wrap(~Home.Owner) +
+  geom_text(aes(label = paste0(percentage, "%")), position = position_stack(vjust = 0.5), color = "white") +
+  labs(title = "Czy kupił rower vs Posiadanie domu", fill = "Czy kupił rower?") +
+  theme_void()
+```
+
+```{r}
+library(ggplot2)
+library(dplyr)
+
+ggplot(sklep_rowerowy, aes(x = home_owner, fill = purchased_bike)) +
+  geom_bar(position = "fill") +
+  scale_y_continuous(labels = scales::percent) +
+  scale_fill_manual(values = c("Yes" = "darkgreen", "No" = "lightblue")) +  # Zmiana kolorów
+  labs(title = "Procent osób mających rower w zalezności od posiadania domu", 
+       x = "Posiadanie domu", 
+       y = "Procent", 
+       fill = "Czy kupił rower?") +
+  theme_minimal()
+```
+#rower vs posiadanie auta
+```{r}
+ggplot(sklep_rowerowy, aes(x = factor(cars), fill = purchased_bike)) +
+  geom_bar(position = "fill") +
+  scale_y_continuous(labels = scales::percent) +
+  scale_fill_manual(values = c("Yes" = "darkgreen", "No" = "purple")) +  # Zmiana kolorów
+  labs(title = "Czy kupił rower w zależności od liczby samochodów", 
+       x = "Liczba samochodów", 
+       y = "Procent", 
+       fill = "Czy kupił rower?") +
+  theme_minimal()
 ```
 

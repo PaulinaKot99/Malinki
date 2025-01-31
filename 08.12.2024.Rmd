@@ -198,7 +198,8 @@ rower vs odleglosc
 #na lewo pochodza z rozkladu prawo-skosnego, a na prawo, to z rozkladu lewo-skosnego
 #pudelko- lewa to 1szy kwartyl, po prawej 3 kwartyl/ srodkowa kreska to chyba mediana/ srednia- do spr na necie
 #kropki- obserwacje odstajace tzw outsiders- wygolnic, ze 80-90 latek rzadko jest wlascicielem roweru
-# dom vs wiek
+
+
 ```{r}
 library(ggplot2)
 library(hrbrthemes)
@@ -209,10 +210,6 @@ library(readxl)
 library(janitor)
 sklep_rowerowy <- janitor::clean_names(sklep_rowerowy)
 
-ggplot(sklep_rowerowy, aes(x=home_owner, y=age)) +
- geom_boxplot() +
- coord_flip()
-
 ```
 # Zależność wieku i zarobków:
 #jak najwiecej informacji o tych rowerow
@@ -220,8 +217,8 @@ ggplot(sklep_rowerowy, aes(x=home_owner, y=age)) +
 ggplot(sklep_rowerowy, aes(x=income,
  y=age)) +
  geom_point() +
- xlab("zarobek") +
- ylab("wiek")
+ xlab("Zarobek") +
+ ylab("Wiek")
 ggtitle("Zarobki w porównaniu do wieku")
 ```
 
@@ -230,9 +227,9 @@ ggtitle("Zarobki w porównaniu do wieku")
 ggplot(sklep_rowerowy, aes(x=children,
  y=age)) +
  geom_point() +
- xlab("liczba dzieci") +
- ylab("wiek")
-ggtitle("Dzieci vs wiek")
+ xlab("Liczba dzieci") +
+ ylab("Wiek")
+ggtitle("Zależność pomiędzy wiekiem, a liczbą dzieci")
 
 ```
 #posiadanie domu w porównaniu do wieku
@@ -241,8 +238,8 @@ ggtitle("Dzieci vs wiek")
 ggplot(sklep_rowerowy, aes(x=age,
  y=home_owner)) +
  geom_boxplot() +
- xlab("wiek") +
- ylab("czy posiada dom")
+ xlab("Wiek") +
+ ylab("Posiadanie domu")
 ggtitle("Posiadanie domu w porównaniu do wieku")
 
 ```
@@ -251,9 +248,9 @@ ggtitle("Posiadanie domu w porównaniu do wieku")
 ggplot(sklep_rowerowy, aes(x=income,
  y=education)) +
  geom_boxplot() +
- xlab("zarobki") +
- ylab("poziom edukacji")
-ggtitle("zależność zarobków od poziomu edukacji")
+ xlab("Zarobki") +
+ ylab("Poziom edukacji")
+ggtitle("Zależność zarobków od poziomu edukacji")
 
 ```
 # rower vs pensja
@@ -261,9 +258,9 @@ ggtitle("zależność zarobków od poziomu edukacji")
 ggplot(sklep_rowerowy, aes(x=income,
  y=purchased_bike)) +
  geom_boxplot() +
- xlab("zarobki") +
- ylab("liczba rowerów")
-ggtitle("zależność zarobków do posiadania rowerów")
+ xlab("Zarobki") +
+ ylab("Liczba rowerów")
+ggtitle("Zależność zarobków do posiadania rowerów")
 
 ```
 #dodane Julia
@@ -398,7 +395,7 @@ ggplot(dane_zliczone, aes(x = marital_status, y = liczba, fill = purchased_bike)
   xlab("Stan cywilny") +
   ylab("Liczba osób") +
   ggtitle("Ilość osób posiadających rower w zależności od stanu cywilnego") +
-  scale_fill_manual(values = c("Yes" = "pink", "No" = "white"), name = "Czy posiada rower?")
+  scale_fill_manual(values = c("Yes" = "pink", "No" = "white"), name = "Posiadanie roweru")
 ```
 
 
@@ -420,28 +417,28 @@ ggplot(df_pie, aes(x = "", y = percentage, fill = purchased_bike)) +
   facet_wrap(~gender) +  # Oddzielne koła dla każdej płci
   geom_text(aes(label = paste0(percentage, "%")),  # Dodajemy procenty
             position = position_stack(vjust = 0.5), size = 5, color = "white") +  
-  labs(title = "Procent osób posiadających rower w podziale na płeć", fill = "Czy posiada rower?") +
+  labs(title = "Procent osób posiadających rower w podziale na płeć", fill = "Posiadanie roweru") +
   scale_fill_manual(values = c("Yes" = "#2E86C1", "No" = "#A93226")) +
   theme_void()  # Usuwamy osie dla czystego wyglądu
 ```
 
 
 
-rower vs posiadanie dzieci
+#rower vs posiadanie dzieci
 ```{r}
 library(ggplot2)
 library(hrbrthemes)
 
 ggplot(sklep_rowerowy, aes(x = factor(children), fill = purchased_bike)) +
   geom_bar(position = "dodge", width = 0.6) +
-  labs(title = "Czy posiadanie roweru zależy od liczby dzieci?",
+  labs(title = "Posiadanie roweru w zależności od liczby dzieci",
        x = "Liczba dzieci", y = "Liczba osób") +
   scale_fill_manual(values = c("Yes" = "#00BFC4", "No" = "#F8766D"), 
-                    name = "Czy posiada rower?") +
+                    name = "Posiadanie roweru") +
   theme_minimal(base_size = 14)
 ```
 
-
+#rower vs poziom wykształcenia
 ```{r}
 library(dplyr)
 
@@ -464,6 +461,8 @@ ggplot(df_pie, aes(x = "", y = percentage, fill = purchased_bike)) +
   theme_void() +
   theme(strip.text = element_text(size = 12, face = "bold"))  # Lepsza czytelność
 ```
+
+
 #rower vs zawód
 ```{r}
 library(ggplot2)
@@ -471,32 +470,17 @@ library(dplyr)
 library(ggmosaic)  # Dla wykresu mozaikowego
 
 
-ggplot(sklep_rowerowy, aes(x = Occupation, fill = Purchased.Bike)) +
+ggplot(sklep_rowerowy, aes(x = occupation, fill = purchased_bike)) +
   geom_bar(position = "dodge") +
   scale_fill_manual(values = c("Yes" = "salmon", "No" = "white")) +  # Zmiana kolorów
   labs(title = "Ilość osób posiadających rower w zależności od zawodu", 
        x = "Zawód", 
        y = "Liczba osób", 
-       fill = "Czy kupił rower?") +
+       fill = "Posiadanie roweru") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
 #rower vs posiadanie domu
-```{r}
-
-  group_by(home_owner, purchased_bike) %>%
-  summarise(count = n()) %>%
-  mutate(percentage = round(count / sum(count) * 100, 1))
-
-ggplot(df_pie, aes(x = "", y = percentage, fill = Purchased.Bike)) +
-  geom_bar(stat = "identity", width = 1, color = "white") +
-  coord_polar("y", start = 0) +
-  facet_wrap(~Home.Owner) +
-  geom_text(aes(label = paste0(percentage, "%")), position = position_stack(vjust = 0.5), color = "white") +
-  labs(title = "Czy kupił rower vs Posiadanie domu", fill = "Czy kupił rower?") +
-  theme_void()
-```
-
 ```{r}
 library(ggplot2)
 library(dplyr)
@@ -508,19 +492,20 @@ ggplot(sklep_rowerowy, aes(x = home_owner, fill = purchased_bike)) +
   labs(title = "Procent osób mających rower w zalezności od posiadania domu", 
        x = "Posiadanie domu", 
        y = "Procent", 
-       fill = "Czy kupił rower?") +
+       fill = "Posiadanie roweru") +
   theme_minimal()
 ```
 #rower vs posiadanie auta
 ```{r}
+library(ggplot2)
+library(hrbrthemes)
+
 ggplot(sklep_rowerowy, aes(x = factor(cars), fill = purchased_bike)) +
-  geom_bar(position = "fill") +
-  scale_y_continuous(labels = scales::percent) +
-  scale_fill_manual(values = c("Yes" = "darkgreen", "No" = "purple")) +  # Zmiana kolorów
-  labs(title = "Czy kupił rower w zależności od liczby samochodów", 
-       x = "Liczba samochodów", 
-       y = "Procent", 
-       fill = "Czy kupił rower?") +
-  theme_minimal()
+  geom_bar(position = "dodge", width = 0.6) +
+  labs(title = "Zależność między posiadaniem roweru, a ilością aut",
+       x = "Liczba aut", y = "Liczba osób") +
+  scale_fill_manual(values = c("Yes" = "#00BFC4", "No" = "#F8766D"), 
+                    name = "Posiadanie roweru") +
+  theme_minimal(base_size = 14)
 ```
 

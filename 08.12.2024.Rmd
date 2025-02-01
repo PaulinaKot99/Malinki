@@ -1,6 +1,7 @@
 ---
 title: ""
 date: "`r Sys.Date()`"
+author: "Edyta Adamska, Julia Bakalarz, Paulina Kotlewska"
 output:
   rmdformats::downcute:
     self_contained: true
@@ -10,6 +11,12 @@ editor_options:
   markdown: 
     wrap: 72
 ---
+## Wprowadzenie 
+ssssssss
+
+Naszym pierwszym krokiem bla bla 
+
+## Ładowanie danych 
 
 ```{r setup, include=FALSE}
 ## Global options
@@ -18,67 +25,7 @@ library(readr)
 sklep_rowerowy <- read_csv("sklep_rowerowy.csv")
 ```
 
-#Pakiet NANIAR do analizowania braków danych
-
-```{r}
-# install.packages("naniar")
-library(naniar)
-```
-
-# Zliczanie całkowitej liczby NA
-
-```{r}
-n_miss(sklep_rowerowy)
-```
-
-# Zliczanie całkowitej liczby kompletnych wartości
-
-```{r}
-n_complete(sklep_rowerowy)
-```
-
-# Procent braków
-
-```{r}
-prop_miss(sklep_rowerowy)
-```
-
-# Tabela podsumowująca NA
-#to nie do wnioskowania, brakow danych nie wnioskujemy
-
-```{r}
-miss_var_summary(sklep_rowerowy)
-```
-
-# Wizualizacja NA
-
-#obserwacje pokazuja wiersze w jakich sa braki
-
-```{r}
-vis_miss(sklep_rowerowy)
-```
-
-#Wizualizacja ogólnej liczby NA #gdyby wg płci się zrobiła zaleznośc, to
-bylyby braki na zolto, a tutaj nie ma #u nas nie bedzie za duzo widac,
-poniewaz mamy bardzo malo brakow
-
-```{r}
-cluster = TRUE
-sort_miss = TRUE 
-gg_miss_fct(sklep_rowerowy, Gender)
-```
-
-# Przekroje NA
-
-```{r}
-gg_miss_upset(sklep_rowerowy,
-              nsets=53)
-```
-
-#brakuje wypelniania brakow- najpierw powinnismy sprawdzic czy sa bledy,
-jak nie ma, to wypelniamy braki, czyli kolejnosc jest u nas dobra
-
-# Instalujemy pakiety
+# Ładowanie pakietów 
 
 ```{r include=FALSE}
 #if(!require("tidyverse")) install.packages("tidyverse")
@@ -94,6 +41,85 @@ library(VIM)
 library(validate)
 ```
 
+# Sprawdzenie struktury danych 
+
+```{r}
+str(sklep_rowerowy)
+```
+
+#Analiza braków danych 
+Wykorzystując pakiet "naniar" ustalamy czy w wśród naszych danych znajdują się braki danych. 
+
+#Instalacja pakietu 
+
+```{r}
+# install.packages("naniar")
+library(naniar)
+```
+
+# Zliczanie całkowitej liczby braków
+
+```{r}
+n_miss(sklep_rowerowy)
+```
+#Są 53 braki w zbiorze danych.
+
+# Zliczanie całkowitej liczby kompletnych wartości
+
+```{r}
+n_complete(sklep_rowerowy)
+```
+#Liczba całkowitych wartości - bez brakujących wartości to 12947. 
+
+# Procent braków
+
+```{r}
+prop_miss(sklep_rowerowy)
+```
+#Wśród zbioru danych brakujące wartości to około 0,41% odnośnie do liczby wszystkich wartości. 
+
+# Tabela podsumowująca braki w zbiorze danych 
+
+```{r}
+miss_var_summary(sklep_rowerowy)
+```
+#Największa ilosć braków znajduje się w kolumnie "Gender". Braki znajdują się w 7 kolumnach z 12.
+
+# Wizualizacja braków
+
+```{r}
+vis_miss(sklep_rowerowy)
+```
+
+#Wizualizacja ogólnej liczby braków
+```{r}
+gg_miss_fct(sklep_rowerowy, fct = Gender) +
+  scale_fill_distiller(direction = 1, palette = "PiYG")
+gg_miss_fct(sklep_rowerowy, fct = Cars) +
+  scale_fill_distiller(direction = 1, palette = "PiYG")
+gg_miss_fct(sklep_rowerowy, fct = Children) +
+  scale_fill_distiller(direction = 1, palette = "PiYG")
+gg_miss_fct(sklep_rowerowy, fct = `Home Owner`) +
+  scale_fill_distiller(direction = 1, palette = "PiYG")
+gg_miss_fct(sklep_rowerowy, fct = Income) +
+  scale_fill_distiller(direction = 1, palette = "PiYG")
+gg_miss_fct(sklep_rowerowy, fct = `Marital Status`) +
+  scale_fill_distiller(direction = 1, palette = "PiYG")
+gg_miss_fct(sklep_rowerowy, fct = Age) +
+  scale_fill_distiller(direction = 1, palette = "PiYG")
+
+```
+DO POPRAWY ALE JESZCZE NIE WIEM JAK 
+
+# Przekroje braków
+
+```{r}
+gg_miss_upset(sklep_rowerowy,
+              nsets=53)
+```
+#Tu nie wiem jaki wniosek help 
+
+#tu też 
 #Reguły: dodac kilka regul tutaj #reguly do wszystkich numerycznych
 zmiennych dac
 
@@ -114,10 +140,28 @@ reguly <- editset(c(
 #np jesli jestes dzieckiem, to masz rower, masz ppnizej 3 lat, nie posiadasz roweru
 #jesli masz srednie dochody to prawd jestes posiadaczem roweru- wnioskowanie dla populacji np kraju, np mamy 40 mezczyzn i 30 z nich ma rower, to 70% ogolem jest posiadaczem roweru
 
-#reguły dodane Edyta
+#Walidacja danych 
+```{r}
+glimpse(sklep_rowerowy)
+```
+```{r}
+reguuly <- validator(
+  Gender %in% c("Male", "Female"),
+  Married %in% c("Yes", "No"),
+  Income >= 0,
+  Education %in% c("Graduate", "Not Graduate"),
+  Self_Employed %in% c("Yes", "No"),
+  Children >= 0,
+  Cars >= 0,
+  Age > 0,
+  Loan_Amount_Term > 0,
+  `Purchased Bike` %in% c("Yes", "No"),
+  Property_Area %in% c("Urban", "Semiurban", "Rural"),
+  `Commute Distance` %in% c("0-1 Miles", "")
 
-#dla tesktowych rowniez, ale inna formula
-#dodane Edyta - stan cywilny i posiadacz domu 
+```
+Do tego momentu robiłam #Edyta 
+
 ```{r}
 library(validate)
 wynik_reguly<-check_that(sklep_rowerowy,Marital.status==Married,Income>=70000)

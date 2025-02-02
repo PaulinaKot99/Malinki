@@ -11,11 +11,6 @@ editor_options:
   markdown: 
     wrap: 72
 ---
-## 1 Wprowadzenie 
-ssssssss
-
-Naszym pierwszym krokiem bla bla 
-
 ## 1.1 Ładowanie danych 
 
 ```{r setup, include=FALSE}
@@ -135,41 +130,41 @@ library(validate)
 # Sprawdzenie wartości jakie są w zbiorze danych 
 ```{r}
 glimpse(sklep_rowerowy)
-results <- confront(sklep_rowerowy,reguly)
-summary(results)
 ```
-```
+# Dane z stanem cywilnym, dochodem, płcią i posiadaniem domu
 ```{r}
 wynik_reguly<-check_that(sklep_rowerowy,Marital.status==Married,Income>=70000)
 wynik_reguly
 wynik_reguly2<-check_that(sklep_rowerowy,Gender==Male, Home.Owner==Yes)
 wynik_reguly2
-
+summary(wynik_reguly)
+summary(wynik_reguly2)
 ```
+
 # Dane z edukacja, posiadaniem roweru, poziomem wyksztalcenia i zawodem
 
 ```{r}
 library(validate)
-wynik_reguly<-check_that(sklep_rowerowy,Region==Pacific,Purchased_Bike==Yes)
-wynik_reguly
-wynik_reguly2<-check_that(sklep_rowerowy,Education==Bachelors,Occupation==Professional)
-wynik_reguly2
+wynik_reguly3<-check_that(sklep_rowerowy,Region==Pacific,Purchased_Bike==Yes)
+wynik_reguly3
+wynik_reguly4<-check_that(sklep_rowerowy,Education==Bachelors,Occupation==Professional)
+wynik_reguly4
+summary(wynik_reguly3)
+summary(wynik_reguly4)
 ```
+
 # dane jako kobieta, edukacja, nie posiada domu, singiel
 ```{r}
 library(validate)
-wynik_reguly<-check_that(sklep_rowerowy,Gender==Female,Education==Graduate_Degree)
-wynik_reguly
-wynik_reguly2<-check_that(sklep_rowerowy,Home_Owner==No,Marital.status==Single)
-wynik_reguly2
+wynik_reguly5<-check_that(sklep_rowerowy,Gender==Female,Education==Graduate_Degree)
+wynik_reguly5
+wynik_reguly6<-check_that(sklep_rowerowy,Home_Owner==No,Marital.status==Single)
+wynik_reguly6
+summary(wynik_reguly5)
+summary(wynik_reguly6)
 ```
 
-#Poprawiam błędy w danych #nie bylo zadnych bledow wiec nic nie poprawil
-```{r}
-sklep_rowerowy[localizeErrors(reguly,sklep_rowerowy)$adapt] <- NA
-```
-****
-## Wypełnianie braków danych
+## 3  Wypełnianie braków danych
 #Instalowane potrzebnego pakietu
 
 ```{r}
@@ -191,7 +186,7 @@ sum(is.na(sklep_rowerowy))
 #Ze względu na bardzo małą liczbę braków danych zdecydowałyśmy się na imputacje metodą hot deck. Polega na zastępowaniu brakujących wartości (NA) rzeczywistymi wartościami pobranymi z podobnych obserwacji w tym samym zbiorze danych.
 #SPRAWDZIĆ CZY NA PEWNO DOBRZE
 
-## Wizualizacja danych 
+## 4 Wizualizacja danych 
 
 #Zależność wieku i zarobków
 
@@ -228,7 +223,7 @@ ggplot(sklep_rowerowy, aes(x=age,
 ggtitle("Posiadanie domu w porównaniu do wieku")
 
 ```
-#Wniosek: Osoby nie posiadające domu są w większości młodsze, ale widać też starsze osoby. Osoby posiadające dom są rozłożone bardziej równomiernie, ale dominują osoby w średnim i starszym wieku. Osoby starsze częściej są właścicielami domu co jest logiczne, ponieważ nieruchomość wymaga stabilizacji finansowej i czasu. Dodatkowo występuje kilka punktów odstających (outliers)????, które można zauważyć poza głównym obszarem wykresu - wśród posiadaczy domu są osoby powyżej 80 lat, ale pośród osoby bez domu również znadją się osoby w podeszłym wieku. Posiadanie domu rośnie z wiekiem, ponieważ ludzie oszczędzają przez lata i inwestują w nieruchomości. 
+#Wniosek: Osoby nie posiadające domu są w większości młodsze, ale widać też starsze osoby. Osoby posiadające dom są rozłożone bardziej równomiernie, ale dominują osoby w średnim i starszym wieku. Osoby starsze częściej są właścicielami domu co jest logiczne, ponieważ nieruchomość wymaga stabilizacji finansowej i czasu. Dodatkowo występuje kilka punktów odstających, które można zauważyć poza głównym obszarem wykresu - wśród posiadaczy domu są osoby powyżej 80 lat, ale pośród osoby bez domu również znadją się osoby w podeszłym wieku. Posiadanie domu rośnie z wiekiem, ponieważ ludzie oszczędzają przez lata i inwestują w nieruchomości. 
 
 #Zależność zarobków od poziomu edukacji 
 ```{r}
@@ -241,11 +236,11 @@ ggtitle("Zależność zarobków od poziomu edukacji")
 
 ```
 #Poziom wykształcenia i wyjaśnienie Partial High School- częściowe wykształcenie średnie; Partial College - częściowe wykształcenie wyższe; High School - wykształcenie średnie; Graduate Degree - stopień magisterski;  Bachelors - licencjat.
-#Wniosek: 
-tu koncze na razie - Edyta 
+#Wniosek: Grupy "Partial High School" i "Partial College" mają najniższe zarobki i najmniejsze zróżnicowanie. Z kolei osoby z tytułem licencjata mają naajwyższe zarobki, ale również najbardziej zróżnicowane. W każdej grupie można zauważyć punkty odstające, szczególnie w grupach z wyższym wykształceniem. Im wyższy poziom edukacji, tym wyższy poziom zarobków. 
 
 
-# rower vs pensja
+# zależność zarobków do posiadania rowerów
+
 ```{r}
 ggplot(sklep_rowerowy, aes(x=income,
  y=purchased_bike)) +
@@ -255,12 +250,9 @@ ggplot(sklep_rowerowy, aes(x=income,
 ggtitle("Zależność zarobków do posiadania rowerów")
 
 ```
-#dodane Julia
+#Wniosek: Mediana zarobków osób z rowerem jest wyższa niż tych bez roweru. Rozkład zarobków dla obu grup ma podobny rozrzut, ale osoby z rowerem wydają się mieć wyższą medianę zarobków.
 
-#Wykres gęstości zarobków- widac, ze nie jest to rozkład normalny- test Shapiro-wilka do normalnego rozkladu
-#p-value spr
-#zastanowic sie czy ponizsze jest potrzebne
-#spr jaki test statystyczny tu zrobic- z jakiego rozkladu pochodza te dane i takim testem sprawdzone
+# Wykres gęstości zarobków 
 
 ```{r}
 ggplot(sklep_rowerowy, aes(x = income)) +
@@ -270,10 +262,7 @@ ggplot(sklep_rowerowy, aes(x = income)) +
   ggtitle("Rozkład zarobków") +
   theme_minimal()
 ```
-#Wniosek: 
-
-
-
+#Wniosek: Widać dwa wyraźne szczyty w okolicach 35 000 zł i 55 000 zł, co sugeruje, że w badanej grupie występują dwie główne grupy zarobkowe. Po 55 000 zł gęstość zaczyna maleć, ale nadal są osoby zarabiające ponad 100 000 zł. Przy najwyższych zarobkach (powyżej 150 000 zł) gęstość jest bliska zeru, co oznacza, że bardzo niewiele osób osiąga tak wysokie dochody.Nierównomierny rozkład wskazuje, że zarobki nie są symetrycznie rozłożone – dominują dwa przedziały, a wysokie zarobki to rzadkość.
 
 # Grupowanie i zliczanie
 ```{r}
@@ -281,14 +270,15 @@ library(dplyr)
 
 dane_zliczone <- sklep_rowerowy %>%
   group_by(region, purchased_bike) %>%
-  summarise(liczba = n())
+  summarise(liczba = n(), .groups = "keep")
+
 ```
 
-#region vs liczba rowerów- takie wykresy porobic
+#Liczba osób posiadających rowery w zależności od regionu 
 ```{r}
 library(ggplot2)
 
-ggplot(dane_zliczone, aes(x = region, y = liczba, fill = purchased_bike)) +
+ggplot(dane_zliczone, aes(x = "Region", y = liczba, fill = purchased_bike)) +
   geom_bar(stat = "identity", position = "dodge") +
   xlab("Region") +
   ylab("Liczba osób") +
@@ -309,7 +299,7 @@ dane_wiek <- sklep_rowerowy %>%
   summarise(liczba = n(), .groups = "drop")
 ```
 
-#wiek vs liczba rowerów
+#Zależność pomiędzy wiekiem a liczbą rowerów
 ```{r}
 library(ggplot2)
 
@@ -332,7 +322,7 @@ dane_dojazd <- sklep_rowerowy %>%
   summarise(liczba = n(), .groups = "drop")
 ```
 
-# rower vs odległość dojazdu do pracy
+# Zależność pomiędzy posiadaniem roweru a odległością dojazdu do pracy
 ```{r}
 library(ggplot2)
 library(forcats)
@@ -351,7 +341,7 @@ ggplot(dane_dojazd, aes(x = factor(commute_distance, levels = sort(unique(commut
 
 
 
-#ilość osób zamęznych vs wiek
+# Zależność pomiędzy liczbą osób zamężnych a wiekiem
 ```{r}
 library(ggplot2)
 library(hrbrthemes)
@@ -370,30 +360,20 @@ ggplot(Credit, aes(x=AgeGroup, fill=Married)) +
 ```
 #Wniosek: Dla każdej kategorii wiekowej jest więcej osób zamężnych, niż singli. Słupki wraz z rosnącą grupą wiekową są coraz wyższe, co wskazuje, że najwięcej osób oberwowanych jest w wieku 60-100 lat. Troche mniej w 40-60 latach oraz najmniej w 20-40 latach.
 
-
-
-
-#wnioskowanie statystyczne- wyciągniecie wniosków na temat wszystkich posiadaczy rowerów
-#pod kazdym wykresem wnioski dla wykresu i uogolnienie dla populacji- spr tez enauczanie
-#mozna zmieniac czcionki jak w wordzie/ mozna popatrzec na dostepne funkcje
-#spr markdown na enauczaniu jak sie chunki wordowe dodaje
-#wykres w zaleznosci od ilosci dzieci
-
-#dodane Julia 31/1/2025
-
 # Grupowanie i zliczanie
 ```{r}
 library(dplyr)
 
 dane_zliczone <- sklep_rowerowy %>%
   group_by(marital_status, purchased_bike) %>%
-  summarise(liczba = n())
+  summarise(liczba = n(), .groups = "keep")
+
 ```
 
-#rower vs stan cywilny
+#Zależność pomiędzy posiadaniem roweu a stanem cywilnym
+
 ```{r}
 library(ggplot2)
-
 ggplot(dane_zliczone, aes(x = marital_status, y = liczba, fill = purchased_bike)) +
   geom_bar(stat = "identity", position = "dodge") +
   xlab("Stan cywilny") +
@@ -406,7 +386,7 @@ ggplot(dane_zliczone, aes(x = marital_status, y = liczba, fill = purchased_bike)
 
 
 
-#rower vs płeć
+#Zależność pomiędzy posiadaniem roweru a płcią 
 ```{r}
 library(dplyr)
 library(ggplot2)
@@ -432,11 +412,11 @@ ggplot(df_pie, aes(x = "", y = percentage, fill = purchased_bike)) +
 
 
 
-#rower vs posiadanie dzieci
+#Zależność między posiadaniem roweru i posiadaniem dzieci 
+
 ```{r}
 library(ggplot2)
 library(hrbrthemes)
-
 ggplot(sklep_rowerowy, aes(x = factor(children), fill = purchased_bike)) +
   geom_bar(position = "dodge", width = 0.6) +
   labs(title = "Posiadanie roweru w zależności od liczby dzieci",
@@ -449,7 +429,7 @@ ggplot(sklep_rowerowy, aes(x = factor(children), fill = purchased_bike)) +
 
 
 
-#rower vs poziom wykształcenia
+#Zależność pomiędzy poiadaniem roweru a poziomem wykształcenia
 ```{r}
 library(dplyr)
 
@@ -476,10 +456,12 @@ ggplot(df_pie, aes(x = "", y = percentage, fill = purchased_bike)) +
 
 
 
-#rower vs zawód
+#Zależność pomiędzy posiadaniem roweru vs zawodem
+
 ```{r}
 library(ggplot2)
 library(dplyr)
+install.packages("ggmosaic")
 library(ggmosaic)  # Dla wykresu mozaikowego
 
 
@@ -495,7 +477,7 @@ ggplot(sklep_rowerowy, aes(x = occupation, fill = purchased_bike)) +
 #Wniosek: Największe grupy osób nie posiadających rowerów znajdują się w kategoriach zawodu Professional i Skilled manual. Tam również są najwyższe ilości osób mające rowery, z przewagą dla zawodu professional. Najmniejsze ilości osób posiadajacych i nieposiadających rowery znajdują się w kategorii zawodu manual.
 
 
-#rower vs posiadanie domu
+#Zależność między posiadaniem roweru vs posiadaniem domu
 ```{r}
 library(ggplot2)
 library(dplyr)
@@ -513,7 +495,8 @@ ggplot(sklep_rowerowy, aes(x = home_owner, fill = purchased_bike)) +
 #Wniosek: Można zaobserwować na podstawie powyższego wykresu, że posiadanie roweru nie jest za bardzo uzależnione od posiadania domu lub jego braku. W obu słupkach minimalnie przeważa nie posiadanie roweru dla obu opcji. Dla właścicieli domów jest odrobinę mniej osób posiadających rowery w porównaniu do ludzi, którzy tego domu nie mają.
 
 
-#rower vs posiadanie auta
+#Zależność między posiadaniem roweru vs posiadaniem auta
+
 ```{r}
 library(ggplot2)
 library(hrbrthemes)

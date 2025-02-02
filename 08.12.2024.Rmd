@@ -11,7 +11,10 @@ editor_options:
   markdown: 
     wrap: 72
 ---
-## 1.1 Ładowanie danych 
+## 1. Wprowadzenie 
+# Projekt dotyczy analizy danych klientów sklepu rowerowego. Wykorzystano język R oraz liczne pakiety analityczne, takie jak tidyverse, dlookr, validate czy VIM. Celem było sprawdzenie struktury danych, analiza braków, walidacja oraz imputacja brakujących wartości. Dodatkowo przeprowadzono wizualizację zależności między zmiennymi.
+
+## Ładowanie danych 
 
 ```{r setup, include=FALSE}
 ## Global options
@@ -20,7 +23,7 @@ library(readr)
 sklep_rowerowy <- read_csv("sklep_rowerowy.csv")
 ```
 
-# 1.2 Ładowanie pakietów 
+# Ładowanie pakietów 
 
 ```{r include=FALSE}
 #if(!require("tidyverse")) install.packages("tidyverse")
@@ -44,14 +47,14 @@ library(VIM)
 library(validate)
 ```
 
-# 1.3 Sprawdzenie struktury danych 
+# Sprawdzenie struktury danych 
 
 ```{r}
 str(sklep_rowerowy)
 ```
 
-# 1.4 Analiza braków danych 
-Wykorzystując pakiet "naniar" ustalamy czy w wśród naszych danych znajdują się braki danych. 
+#  Analiza braków danych 
+# Wykorzystując pakiet "naniar" ustalamy czy w wśród naszych danych znajdują się braki danych. 
 
 # Instalacja pakietu 
 
@@ -119,7 +122,7 @@ print(reguły)
 ```
 
 
-# 2. Walidacja danych 
+## 2. Walidacja danych 
 #Za pomocą walidacji danych sprawdzamy czy spełnione zostały nasze założenia  
 
 #Instalowanie pakietu "validate" 
@@ -184,7 +187,6 @@ sum(is.na(sklep_rowerowy))
 
 
 #Ze względu na bardzo małą liczbę braków danych zdecydowałyśmy się na imputacje metodą hot deck. Polega na zastępowaniu brakujących wartości (NA) rzeczywistymi wartościami pobranymi z podobnych obserwacji w tym samym zbiorze danych.
-#SPRAWDZIĆ CZY NA PEWNO DOBRZE
 
 ## 4 Wizualizacja danych 
 
@@ -286,8 +288,6 @@ ggplot(dane_zliczone, aes(x = "Region", y = liczba, fill = purchased_bike)) +
   scale_fill_manual(values = c("Yes" = "blue", "No" = "red"), name = "Posiadanie roweru")
 ```
 #Wniosek: Powyższy wykres przedstawia zależność posiadania rowerów od zamieszkanego regionu. Najwięcej osób zamieszkuje północną Amerykę, mniej w Europę i najmniej Pacyfik. W północnej Amreyce przeważa ilość osob nie posiadających rowerów, nad ilością osób mających je. W Europie ilość osób nie mających rowerów jest bardzo zbliżona, choć mininalnie wyższa w porównaniu do ilości osób będących właścicielami rowerów. Na Pacyfiku ilość osób będących w posiadaniu rowerów przeważa do tych, którzy ich nie mają.
-
-
 
 
 # Grupowanie według wieku i posiadania roweru, a następnie zliczanie
@@ -510,3 +510,32 @@ ggplot(sklep_rowerowy, aes(x = factor(cars), fill = purchased_bike)) +
   theme_minimal(base_size = 14)
 ```
 #Wniosek: Na podstawie wykresu można zauważyć, że wraz ze wzrostem liczby samochodów w gospodarstwie domowym maleje prawdopodobieństwo posiadania roweru. Najwięcej osób posiadających rowery znajduje się w grupach posiadających 0–2 samochody. Z kolei największa liczba osób, które nie posiadają roweru (około 220), to właściciele dwóch aut.
+
+
+## 5. Wnioskowanie statystyczne projektu
+
+# Analiza struktury danych: Pierwszym krokiem było sprawdzenie struktury zbioru danych. Dane składają się z różnych cech demograficznych i ekonomicznych klientów, takich jak wiek, dochód, liczba dzieci, wykształcenie, czy posiadanie domu. Kolumny zawierają zarówno zmienne numeryczne, jak i kategoryczne.
+
+# Analiza braków danych: Stwierdzono 53 braki w zbiorze danych, co stanowi około 0,41% wszystkich wartości.Najwięcej braków dotyczyło zmiennej Gender(płeć) oraz cech związanych z edukacją, dochodami i stanowiskiem pracy. Przeprowadzono wizualizację braków, wskazując ich rozkład w poszczególnych kolumnach.
+
+# Walidacja danych
+#W celu weryfikacji poprawności danych zastosowano reguły: wiek w przedziale 1-120 lat;dochód większy lub równy 0; liczba dzieci w przedziale 0-5;liczba samochodów w przedziale 0-10; sprawdzono zależności między zmiennymi np. "Marital.status == Married" oraz "Income >= 70000"; zweryfikowano także zgodność pomiędzy poziomem edukacji a stanowiskiem pracy.
+
+# Imputacja brakujących wartości: ze względu na niewielką liczbę braków zdecydowano się na imputację metodą hot deck. Jest to metoda polegająca na uzupełnianiu braków wartościami z podobnych obserwacji. Po imputacji zweryfikowano brakujące wartości – nie wystąpiły żadne brakujące dane po uzupełnieniu.
+
+# Wizualizacja danych i wnioski
+#Krótkie przypomnienie paru wykresów, ponieważ każdy został wcześniej zinterpretowany. 
+
+### Zależność wieku i zarobków : Na wykresie punktowym widać, że zarobki nie rosną jednoznacznie z wiekiem. Osoby w wieku 40-60 lat mają bardzo zróżnicowane dochody. Większość zarobków oscyluje poniżej 100 000, a powyżej 150 000 to wyjątki.
+
+### Zależność liczby dzieci od wieku: Osoby do 40. roku życia rzadko mają dzieci, z wyjątkiem niektórych przypadków. Najczęstsza liczba dzieci to 2-3. Liczba dzieci rośnie wraz z wiekiem, szczególnie powyżej 30 lat.
+
+### Zależność posiadania domu od wieku: Młodsze osoby rzadziej posiadają domy. Osoby starsze częściej są właścicielami nieruchomości, co sugeruje akumulację kapitału. Wśród osób bez własnego domu również występują jednostki w starszym wieku.
+
+### Zależność zarobków od wykształcenia: Dane wskazują, że wyższe wykształcenie przekłada się na wyższe zarobki. Istnieją jednak wyjątki – osoby bez wyższego wykształcenia również mogą osiągać wysokie dochody.
+
+# Wnioski dotyczące projektu ze sklepem rowerowym
+
+# Testowanie hipotez statystycznych w ramach tego projektu pozwoliło na dokładniejsze zrozumienie zależności między kluczowymi zmiennymi demograficznymi i ekonomicznymi klientów sklepu rowerowego, takimi jak wiek, dochody, liczba dzieci oraz poziom wykształcenia. Analiza statystyczna ujawniła istotne zależności, na przykład wpływ wykształcenia na wysokość dochodów czy też zróżnicowanie dochodów w zależności od wieku. Z kolei analiza liczby dzieci w kontekście wieku klientów dostarczyła wskazówek dotyczących segmentacji klientów według etapu życia, co może być przydatne przy dopasowywaniu ofert do różnych grup wiekowych. Ponadto, analiza posiadania domu jako zmiennej powiązanej z wiekiem podkreśliła znaczenie akumulacji kapitału u starszych klientów, co może mieć wpływ na strategie sprzedaży drogich produktów. Wszystkie te wnioski mogą stanowić cenną podstawę do dalszych badań nad preferencjami klientów sklepu oraz optymalizacji oferty produktowej, a także pomogą w opracowaniu skuteczniejszych strategii marketingowych, dopasowanych do profilu różnych segmentów klientów.
+
+### KONIEC

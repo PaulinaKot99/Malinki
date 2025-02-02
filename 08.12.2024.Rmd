@@ -225,9 +225,9 @@ library(hot.deck)
 #Imputacja
 
 ```{r}
-sklep_rowerowy_imp <- hotdeck(sklep_rowerowy)
-print(sklep_rowerowy_imp)
-sum(is.na(sklep_rowerowy_imp))
+sklep_rowerowy <- hotdeck(sklep_rowerowy)
+print(sklep_rowerowy)
+sum(is.na(sklep_rowerowy))
 ```
 
 
@@ -313,6 +313,9 @@ ggplot(sklep_rowerowy, aes(x = income)) +
   ggtitle("Rozkład zarobków") +
   theme_minimal()
 ```
+#Wniosek: 
+
+
 
 
 # Grupowanie i zliczanie
@@ -335,6 +338,9 @@ ggplot(dane_zliczone, aes(x = region, y = liczba, fill = purchased_bike)) +
   ggtitle("Liczba osób posiadających rowery w zależności od regionu") +
   scale_fill_manual(values = c("Yes" = "blue", "No" = "red"), name = "Posiadanie roweru")
 ```
+#Wniosek: Powyższy wykres przedstawia zależność posiadania rowerów od zamieszkanego regionu. Najwięcej osób zamieszkuje północną Amerykę, mniej w Europę i najmniej Pacyfik. W północnej Amreyce przeważa ilość osob nie posiadających rowerów, nad ilością osób mających je. W Europie ilość osób nie mających rowerów jest bardzo zbliżona, choć mininalnie wyższa w porównaniu do ilości osób będących właścicielami rowerów. Na Pacyfiku ilość osób będących w posiadaniu rowerów przeważa do tych, którzy ich nie mają.
+
+
 
 
 # Grupowanie według wieku i posiadania roweru, a następnie zliczanie
@@ -357,6 +363,7 @@ ggplot(dane_wiek, aes(x = age, y = liczba, fill = purchased_bike)) +
   ggtitle("Liczba osób posiadających rowery w zależności od wieku") +
   scale_fill_manual(values = c("Yes" = "green", "No" = "purple"), name = "Posiadanie roweru")
 ```
+#Wniosek: Najwyższe słupki odzwierciedlają osoby w wieku około 36-38 lat, posiadające rowery. Zaś najwięcej osób nie mających rowerów znajdują się w wieku 30 oraz 40. Jak widać, najwięcej jest na wykresie osób młodych, w średnim wieku, aż po 70. Osób obserwowanych w wieku 70-80 lat jest najmniej, po 79 roku życia już według naszych danych, nikt nie jest posiadaczem roweru.
 
 
 # Grupowanie i zliczanie według odległości dojazdu i posiadania roweru
@@ -382,6 +389,9 @@ ggplot(dane_dojazd, aes(x = factor(commute_distance, levels = sort(unique(commut
   scale_fill_manual(values = c("Yes" = "yellow", "No" = "orange"), name = "Posiadanie roweru") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Obrót etykiet dla lepszej czytelności
 ```
+#Wniosek: Widać silną zależność pomiędzy posiadaniem roweru, a dystansem do pracy. Najwięcej osób mieszka w odległości do pracy 0-1 mili, z przewagą osób posiadających rowery. Choć jest też sporo osób w tym dystansie do pracy nie posiadających rowerów. Te wyniki są za pewne dlatego, ze zarówno łatwo jest dojechać do pracy rowerem tak krótki odcinek jak i przejść się na pieszo. Najmniej osób mieszka w odległości do pracy ponad 10 mili i w tym też więcej osób nie posiada rowerów, niż posiada. Zapewne przy takim dystansie ludzie raczej już korzystają z aut. Podobnie można zauważyć te tendencje w kategorii 5-10 mili odległości do pracy- więcej osób w tej grupie, ale wciąż przeważa ilość osób nie posiadająca rowery.
+
+
 
 
 #ilość osób zamęznych vs wiek
@@ -401,6 +411,9 @@ ggplot(Credit, aes(x=AgeGroup, fill=Married)) +
   labs(title="Liczba osób zamężnych w zależności od grupy wiekowej", x="Grupa wiekowa", y="Liczba osób") +
   theme_classic()
 ```
+#Wniosek: Dla każdej kategorii wiekowej jest więcej osób zamężnych, niż singli. Słupki wraz z rosnącą grupą wiekową są coraz wyższe, co wskazuje, że najwięcej osób oberwowanych jest w wieku 60-100 lat. Troche mniej w 40-60 latach oraz najmniej w 20-40 latach.
+
+
 
 
 #wnioskowanie statystyczne- wyciągniecie wniosków na temat wszystkich posiadaczy rowerów
@@ -408,7 +421,6 @@ ggplot(Credit, aes(x=AgeGroup, fill=Married)) +
 #mozna zmieniac czcionki jak w wordzie/ mozna popatrzec na dostepne funkcje
 #spr markdown na enauczaniu jak sie chunki wordowe dodaje
 #wykres w zaleznosci od ilosci dzieci
-#zrobic te wykresy dla kazdej danej- czy ma rower czy nie, lepiej wiecej niz mniej- pododawac
 
 #dodane Julia 31/1/2025
 
@@ -432,6 +444,9 @@ ggplot(dane_zliczone, aes(x = marital_status, y = liczba, fill = purchased_bike)
   ggtitle("Ilość osób posiadających rower w zależności od stanu cywilnego") +
   scale_fill_manual(values = c("Yes" = "pink", "No" = "white"), name = "Posiadanie roweru")
 ```
+#Wniosek: Na podstawie powyższego wykresu można wywnioskować, że więcej osób obserwowanych jest w związku małżeńskim, zaś mniej singli. Najwięcej osób znajduje się w kategorii zamężnych i nie posiadajacych rowerów, jest tu prawie o 100 osób więcej niż singli nie posiadających rowerów. Zaś właścicieli rowerów jest więcej wsród osób będących singlami w porównaniu do osób zamężnych. Te wyniki prawdopodobnie wynikają z tego, że osoby zamężne częściej korzystają z aut, aniżeli z rowerów.
+
+
 
 
 #rower vs płeć
@@ -456,6 +471,7 @@ ggplot(df_pie, aes(x = "", y = percentage, fill = purchased_bike)) +
   scale_fill_manual(values = c("Yes" = "#2E86C1", "No" = "#A93226")) +
   theme_void()  # Usuwamy osie dla czystego wyglądu
 ```
+#Wniosek: Jak widać płeć nie ma szczególnej zależności w zakresie posiadania roweru. Wyniki na obu wykresach wyszły bardzo podobnie. Jest minimalna przewaga mężczyzn będąca właścicielami rowerów w porównaniu do ilości kobiet posiadająca rowery. Zaś odrobinę więcej kobiet nie ma rowerów w zestawieniu do mężczyzn.
 
 
 
@@ -472,6 +488,9 @@ ggplot(sklep_rowerowy, aes(x = factor(children), fill = purchased_bike)) +
                     name = "Posiadanie roweru") +
   theme_minimal(base_size = 14)
 ```
+#Wniosek: Powyższy wykres wyraźnie pokazuje, że im mniej dzieci, tym więcej osób jest w posiadaniu rowerów. Widać też, że najwięcej osób wśród obserwowanych nie ma dzieci, tam też ilości osób posiadających i nie posiadających rowery są na zbliżonym poziomie. Najmniejsza liczba osób mająca rowery jest równocześnie rodzicem 5 dzieci.
+
+
 
 #rower vs poziom wykształcenia
 ```{r}
@@ -496,6 +515,8 @@ ggplot(df_pie, aes(x = "", y = percentage, fill = purchased_bike)) +
   theme_void() +
   theme(strip.text = element_text(size = 12, face = "bold"))  # Lepsza czytelność
 ```
+#Wniosek: Na podstawie powyższego wykresu widać, że poziom edukacji ma wyrażny wpływ na bycie właścicielem rowery bądź nie. Najmniej osób ma rower w kategorii Partial High School, liczy to prawie 74%. Wraz ze wzrostem edukacji te wyniki posiadania lub nie posiadania roweru oscylują wokoł około 44%-56%, a więc są bliskie połowy. Najwięcej osób są właścicielami rowerów z poziomem edukacji Bachelors.
+
 
 
 #rower vs zawód
@@ -514,6 +535,8 @@ ggplot(sklep_rowerowy, aes(x = occupation, fill = purchased_bike)) +
        fill = "Posiadanie roweru") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
+#Wniosek: Największe grupy osób nie posiadających rowerów znajdują się w kategoriach zawodu Professional i Skilled manual. Tam również są najwyższe ilości osób mające rowery, z przewagą dla zawodu professional. Najmniejsze ilości osób posiadajacych i nieposiadających rowery znajdują się w kategorii zawodu manual.
+
 
 #rower vs posiadanie domu
 ```{r}
@@ -530,6 +553,9 @@ ggplot(sklep_rowerowy, aes(x = home_owner, fill = purchased_bike)) +
        fill = "Posiadanie roweru") +
   theme_minimal()
 ```
+#Wniosek: Można zaobserwować na podstawie powyższego wykresu, że posiadanie roweru nie jest za bardzo uzależnione od posiadania domu lub jego braku. W obu słupkach minimalnie przeważa nie posiadanie roweru dla obu opcji. Dla właścicieli domów jest odrobinę mniej osób posiadających rowery w porównaniu do ludzi, którzy tego domu nie mają.
+
+
 #rower vs posiadanie auta
 ```{r}
 library(ggplot2)
@@ -543,4 +569,4 @@ ggplot(sklep_rowerowy, aes(x = factor(cars), fill = purchased_bike)) +
                     name = "Posiadanie roweru") +
   theme_minimal(base_size = 14)
 ```
-
+#Wniosek: Na podstawie wykresu można zauważyć, że wraz ze wzrostem liczby samochodów w gospodarstwie domowym maleje prawdopodobieństwo posiadania roweru. Najwięcej osób posiadających rowery znajduje się w grupach posiadających 0–2 samochody. Z kolei największa liczba osób, które nie posiadają roweru (około 220), to właściciele dwóch aut.

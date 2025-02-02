@@ -33,6 +33,14 @@ sklep_rowerowy <- read_csv("sklep_rowerowy.csv")
 #if(!require("editrules")) install.packages("editrules") #reguły 
 #if(!require("VIM")) install.packages("VIM")
 #if(!require("validate")) install.packages("validate")
+library(ggplot2)
+library(hrbrthemes)
+library(plotly)
+library(ISLR)
+library(tidyselect)
+library(readxl)
+library(janitor)
+sklep_rowerowy <- janitor::clean_names(sklep_rowerowy)
 
 library(tidyverse)
 library(dlookr)
@@ -117,14 +125,14 @@ DO POPRAWY ALE JESZCZE NIE WIEM JAK
 gg_miss_upset(sklep_rowerowy,
               nsets=53)
 ```
-#Tu nie wiem jaki wniosek help 
+#Tu nie wiem jaki wniosek help Julka 
 
 #tu też 
 #Reguły: dodac kilka regul tutaj #reguly do wszystkich numerycznych
 zmiennych dac
 
 ```{r}
-reguly <- editset(c( 
+reguły <- editset(c( 
   "Age>=1",
   "Age<=120",
   "Income>=0",
@@ -136,31 +144,43 @@ reguly <- editset(c(
   "Children<=5"
   ))
 ```
-
-#np jesli jestes dzieckiem, to masz rower, masz ppnizej 3 lat, nie posiadasz roweru
-#jesli masz srednie dochody to prawd jestes posiadaczem roweru- wnioskowanie dla populacji np kraju, np mamy 40 mezczyzn i 30 z nich ma rower, to 70% ogolem jest posiadaczem roweru
+**** Nie wiem czy to zostawiamy czy co
 
 #Walidacja danych 
+#Za pomocą walidacji danych sprawdzamy czy spełnione zostały nasze założenia  
+
+#Instalowanie pakietu "validate" 
+```{r}
+library(validate)
+```
+
+# Sprawdzenie wartości jakie są w zbiorze danych 
 ```{r}
 glimpse(sklep_rowerowy)
 ```
+
 ```{r}
-reguuly <- validator(
+reguly <- validator(
   Gender %in% c("Male", "Female"),
-  Married %in% c("Yes", "No"),
+  `Marital Status` %in% c("Married", "Single"),
   Income >= 0,
-  Education %in% c("Graduate", "Not Graduate"),
-  Self_Employed %in% c("Yes", "No"),
+  Education %in% c("Bachelors", "Partial College", "High School", "Gradute Degree","Partial High School"),
+  Occupation %in% c("Skilled Manual","Clerical", "Professional","Management", "Manual"),
   Children >= 0,
   Cars >= 0,
   Age > 0,
-  Loan_Amount_Term > 0,
+  `Home Owner` %in% c("Yes", "No"),
   `Purchased Bike` %in% c("Yes", "No"),
-  Property_Area %in% c("Urban", "Semiurban", "Rural"),
-  `Commute Distance` %in% c("0-1 Miles", "")
-
+  Region %in% c("Europe", "Pacific", "North America"),
+  `Commute Distance` %in% c("0-1 Miles", "1-2 Miles", "10+ Miles", "2-5 Miles", "5-10 Miles")
+)
 ```
-Do tego momentu robiłam #Edyta 
+```{r}
+results <- confront(sklep_rowerowy,reguly)
+summary(results)
+```
+
+* nie wiem czy robic tak jak mowilam czy zostawic to zaznaczam gwiazkdami ***
 
 ```{r}
 library(validate)
@@ -191,70 +211,31 @@ wynik_reguly2
 ```{r}
 sklep_rowerowy[localizeErrors(reguly,sklep_rowerowy)$adapt] <- NA
 ```
-
+****
 ## Wypełnianie braków danych
-
-#Ze względu na bardzo małą liczbę braków danych, imputacje można wykonać
-#za pomocą średniej/ mediany albo metodą hot deck- wkleic kilka slow jaka to metoda
-#srednia- dla danych bardziej zroznicowanych
+#Instalowane potrzebnego pakietu
 
 ```{r}
-
 #install.packages("hot.deck")
 #install.packages("VIM")
 library(VIM)
 library(hot.deck)
-
-sklep_rowerowy <- hotdeck(sklep_rowerowy)
-sum(is.na(sklep_rowerowy))
 ```
 
-#ta metoda probuje znalezc podobny wiersz, w ktorym mamy brak, przydatne
-#przy masowych brakach ta druga funkcja pokazuje czy sa jeszcze jakies
-#braki nowy rozdzial dla wizualizacji danych, to bedzie na zajeciach
-#pokrywane- kto kupil rower, kim jest ta osoba, czy ma wyksztalcenie/
-#dzieci, roznice i to w wykresach dodac pare slow komentarzy..
-
-#Wizualizacja danych
-
-co rysować??
-
-czy kupił czy nie kupił rower 
-
-i kim jesteś jak kupujesz, a kim jesteś jak nie kupujesz
-
-jakie masz dochody, ile masz km do pracy, wyksztalcenie, plec 
-
-ciekawe przyklady 
-
-posiadanie domu vs wiek 
-liczba dzieci vs wiek 
-czy ma rower vs odleglosc 
-pensja vs wyksztalcenie mam
-wplywy vs 
-rower vs wiek 
-rower vs region 
-pensja vs rower 
-rower vs odleglosc
-
-#wyogolnic we wnioskowaniu, np ze osoby zonate czesciej kupuja rower albo jaki wiek
-#jakby dane byly na srodku- to wiemy, ze nasze dane pochodza z rozkladu norm
-#na lewo pochodza z rozkladu prawo-skosnego, a na prawo, to z rozkladu lewo-skosnego
-#pudelko- lewa to 1szy kwartyl, po prawej 3 kwartyl/ srodkowa kreska to chyba mediana/ srednia- do spr na necie
-#kropki- obserwacje odstajace tzw outsiders- wygolnic, ze 80-90 latek rzadko jest wlascicielem roweru
-
+#Imputacja
 
 ```{r}
-library(ggplot2)
-library(hrbrthemes)
-library(plotly)
-library(ISLR)
-library(tidyselect)
-library(readxl)
-library(janitor)
-sklep_rowerowy <- janitor::clean_names(sklep_rowerowy)
-
+sklep_rowerowy_imp <- hotdeck(sklep_rowerowy)
+print(sklep_rowerowy_imp)
+sum(is.na(sklep_rowerowy_imp))
 ```
+
+
+#Ze względu na bardzo małą liczbę braków danych zdecydowałyśmy się na imputacje metodą hot deck. Polega na zastępowaniu brakujących wartości (NA) rzeczywistymi wartościami pobranymi z podobnych obserwacji w tym samym zbiorze danych.
+#SPRAWDZIĆ CZY NA PEWNO DOBRZE
+
+#Wizualizacja danych 
+
 # Zależność wieku i zarobków:
 #jak najwiecej informacji o tych rowerow
 ```{r}

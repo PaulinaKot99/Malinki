@@ -234,10 +234,10 @@ sum(is.na(sklep_rowerowy_imp))
 #Ze względu na bardzo małą liczbę braków danych zdecydowałyśmy się na imputacje metodą hot deck. Polega na zastępowaniu brakujących wartości (NA) rzeczywistymi wartościami pobranymi z podobnych obserwacji w tym samym zbiorze danych.
 #SPRAWDZIĆ CZY NA PEWNO DOBRZE
 
-#Wizualizacja danych 
+## Wizualizacja danych 
 
-# Zależność wieku i zarobków:
-#jak najwiecej informacji o tych rowerow
+#Zależność wieku i zarobków
+
 ```{r}
 ggplot(sklep_rowerowy, aes(x=income,
  y=age)) +
@@ -246,8 +246,9 @@ ggplot(sklep_rowerowy, aes(x=income,
  ylab("Wiek")
 ggtitle("Zarobki w porównaniu do wieku")
 ```
+#Wniosek: Na podstawie wykresu można wywnioskować, że zarobek nie rośnie jednoznacznie z wiekiem. Dodatkowo osoby w podobnym wieku mają bardzo różne zarobki, choćby w przedziale 40 - 60 lat.Wszystko to może być zależne od branży czy wykształcenia badanej grupy osób. Większość zarobków znajduje się poniżej 100 000, co oznacza, że osoby zarabiające takie sumy są wyjątkiem. Zarobki powyżej 150 000 również są rzadkością.
 
-# liczba dzieci vs wiek 
+# Zależność pomiędzy liczbą dzieci a wiekiem
 ```{r}
 ggplot(sklep_rowerowy, aes(x=children,
  y=age)) +
@@ -257,7 +258,9 @@ ggplot(sklep_rowerowy, aes(x=children,
 ggtitle("Zależność pomiędzy wiekiem, a liczbą dzieci")
 
 ```
-#posiadanie domu w porównaniu do wieku
+#Wniosek: Dane są rozporszone, co pokazuje, że dzieci znajdują się w każdej grupie wiekowej. Najczęstszą obserwacją, w ogólnym rozkładzie wieku jest liczba dzieci: 2 i 3. Osoby w wieku poniżej 40 lat w zdecydowaniej większości nie posiadają dzieci lub pojawiają się one około 30 roku życia. Wyjątek można zauwazyć w pojedynczych przypadkach, choć przy 3 dzieci można zauważyć mocną tendencje wzrostową. 
+
+#Zależność pomiędzy posiadaniem domu a wiekiem
 
 ```{r}
 ggplot(sklep_rowerowy, aes(x=age,
@@ -268,7 +271,9 @@ ggplot(sklep_rowerowy, aes(x=age,
 ggtitle("Posiadanie domu w porównaniu do wieku")
 
 ```
-#Zarobki vs poziom edukacji
+#Wniosek: Osoby nie posiadające domu są w większości młodsze, ale widać też starsze osoby. Osoby posiadające dom są rozłożone bardziej równomiernie, ale dominują osoby w średnim i starszym wieku. Osoby starsze częściej są właścicielami domu co jest logiczne, ponieważ nieruchomość wymaga stabilizacji finansowej i czasu. Dodatkowo występuje kilka punktów odstających (outliers)????, które można zauważyć poza głównym obszarem wykresu - wśród posiadaczy domu są osoby powyżej 80 lat, ale pośród osoby bez domu również znadją się osoby w podeszłym wieku. Posiadanie domu rośnie z wiekiem, ponieważ ludzie oszczędzają przez lata i inwestują w nieruchomości. 
+
+#Zależność zarobków od poziomu edukacji 
 ```{r}
 ggplot(sklep_rowerowy, aes(x=income,
  y=education)) +
@@ -278,6 +283,11 @@ ggplot(sklep_rowerowy, aes(x=income,
 ggtitle("Zależność zarobków od poziomu edukacji")
 
 ```
+#Poziom wykształcenia i wyjaśnienie Partial High School- częściowe wykształcenie średnie; Partial College - częściowe wykształcenie wyższe; High School - wykształcenie średnie; Graduate Degree - stopień magisterski;  Bachelors - licencjat.
+#Wniosek: 
+tu koncze na razie - Edyta 
+
+
 # rower vs pensja
 ```{r}
 ggplot(sklep_rowerowy, aes(x=income,

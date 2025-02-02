@@ -144,7 +144,7 @@ summary(wynik_reguly)
 summary(wynik_reguly2)
 ```
 
-# Dane z edukacja, posiadaniem roweru, poziomem wyksztalcenia i zawodem
+# Dane z edukacją, posiadaniem roweru, poziomem wykształcenia i zawodem
 
 ```{r}
 library(validate)
@@ -156,7 +156,7 @@ summary(wynik_reguly3)
 summary(wynik_reguly4)
 ```
 
-# dane jako kobieta, edukacja, nie posiada domu, singiel
+# Dane jako kobieta, edukacja, nie posiada domu, singiel
 ```{r}
 library(validate)
 wynik_reguly5<-check_that(sklep_rowerowy,Gender==Female,Education==Graduate_Degree)
@@ -203,6 +203,7 @@ ggtitle("Zarobki w porównaniu do wieku")
 #Wniosek: Na podstawie wykresu można wywnioskować, że zarobek nie rośnie jednoznacznie z wiekiem. Dodatkowo osoby w podobnym wieku mają bardzo różne zarobki, choćby w przedziale 40 - 60 lat.Wszystko to może być zależne od branży czy wykształcenia badanej grupy osób. Większość zarobków znajduje się poniżej 100 000, co oznacza, że osoby zarabiające takie sumy są wyjątkiem. Zarobki powyżej 150 000 również są rzadkością.
 
 # Zależność pomiędzy liczbą dzieci a wiekiem
+
 ```{r}
 ggplot(sklep_rowerowy, aes(x=children,
  y=age)) +
@@ -212,10 +213,10 @@ ggplot(sklep_rowerowy, aes(x=children,
 ggtitle("Zależność pomiędzy wiekiem, a liczbą dzieci")
 
 ```
-#Wniosek: Dane są rozporszone, co pokazuje, że dzieci znajdują się w każdej grupie wiekowej. Najczęstszą obserwacją, w ogólnym rozkładzie wieku jest liczba dzieci: 2 i 3. Osoby w wieku poniżej 40 lat w zdecydowaniej większości nie posiadają dzieci lub pojawiają się one około 30 roku życia. Wyjątek można zauwazyć w pojedynczych przypadkach, choć przy 3 dzieci można zauważyć mocną tendencje wzrostową. 
+#Wniosek: Dane są rozproszone, co pokazuje, że dzieci znajdują się w każdej grupie wiekowej. Najczęstszą obserwacją, w ogólnym rozkładzie wieku jest liczba dzieci: 2 i 3. Osoby w wieku poniżej 40 lat w zdecydowaniej większości nie posiadają dzieci lub pojawiają się one około 30 roku życia. Wyjątek można zauwazyć w pojedynczych przypadkach, choć przy 3 dzieci można zauważyć mocną tendencje wzrostową. 
+
 
 #Zależność pomiędzy posiadaniem domu a wiekiem
-
 ```{r}
 ggplot(sklep_rowerowy, aes(x=age,
  y=home_owner)) +
@@ -241,7 +242,7 @@ ggtitle("Zależność zarobków od poziomu edukacji")
 #Wniosek: Grupy "Partial High School" i "Partial College" mają najniższe zarobki i najmniejsze zróżnicowanie. Z kolei osoby z tytułem licencjata mają naajwyższe zarobki, ale również najbardziej zróżnicowane. W każdej grupie można zauważyć punkty odstające, szczególnie w grupach z wyższym wykształceniem. Im wyższy poziom edukacji, tym wyższy poziom zarobków. 
 
 
-# zależność zarobków do posiadania rowerów
+# Zależność zarobków do posiadania rowerów
 
 ```{r}
 ggplot(sklep_rowerowy, aes(x=income,
@@ -290,7 +291,7 @@ ggplot(dane_zliczone, aes(x = "Region", y = liczba, fill = purchased_bike)) +
 #Wniosek: Powyższy wykres przedstawia zależność posiadania rowerów od zamieszkanego regionu. Najwięcej osób zamieszkuje północną Amerykę, mniej w Europę i najmniej Pacyfik. W północnej Amreyce przeważa ilość osob nie posiadających rowerów, nad ilością osób mających je. W Europie ilość osób nie mających rowerów jest bardzo zbliżona, choć mininalnie wyższa w porównaniu do ilości osób będących właścicielami rowerów. Na Pacyfiku ilość osób będących w posiadaniu rowerów przeważa do tych, którzy ich nie mają.
 
 
-# Grupowanie według wieku i posiadania roweru, a następnie zliczanie
+# Grupowanie według wieku i posiadania roweru a następnie zliczanie
 ```{r}
 library(dplyr)
 
@@ -339,8 +340,6 @@ ggplot(dane_dojazd, aes(x = factor(commute_distance, levels = sort(unique(commut
 #Wniosek: Widać silną zależność pomiędzy posiadaniem roweru, a dystansem do pracy. Najwięcej osób mieszka w odległości do pracy 0-1 mili, z przewagą osób posiadających rowery. Choć jest też sporo osób w tym dystansie do pracy nie posiadających rowerów. Te wyniki są za pewne dlatego, ze zarówno łatwo jest dojechać do pracy rowerem tak krótki odcinek jak i przejść się na pieszo. Najmniej osób mieszka w odległości do pracy ponad 10 mili i w tym też więcej osób nie posiada rowerów, niż posiada. Zapewne przy takim dystansie ludzie raczej już korzystają z aut. Podobnie można zauważyć te tendencje w kategorii 5-10 mili odległości do pracy- więcej osób w tej grupie, ale wciąż przeważa ilość osób nie posiadająca rowery.
 
 
-
-
 # Zależność pomiędzy liczbą osób zamężnych a wiekiem
 ```{r}
 library(ggplot2)
@@ -370,7 +369,7 @@ dane_zliczone <- sklep_rowerowy %>%
 
 ```
 
-#Zależność pomiędzy posiadaniem roweu a stanem cywilnym
+#Zależność pomiędzy posiadaniem roweru a stanem cywilnym
 
 ```{r}
 library(ggplot2)

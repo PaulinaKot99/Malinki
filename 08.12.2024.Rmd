@@ -560,12 +560,8 @@ if (chi_sq_result$p.value < 0.05) {
 anova_result <- aov(age ~ education, data = sklep_rowerowy)
 summary(anova_result)
 
-if (anova_summary[[1]][["Pr(>F)"]][1] < 0.1) {
-  print("Istnieje statystycznie istotna różnica w średnim wieku w zależności od poziomu wykształcenia na poziomie 10%.")
-} else {
-  print("Nie stwierdzono istotnych różnic w średnim wieku w zależności od poziomu wykształcenia.")
-}
 ```
+# Istnieje statystycznie istotna różnica w średnim wieku w zależności od poziomu wykształcenia na poziomie 10%.
 
 ## 5. Wnioskowanie statystyczne projektu
 

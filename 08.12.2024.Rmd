@@ -1,5 +1,5 @@
 ---
-title: ""
+title: "Analiza danych projekt zespołowy"
 date: "`r Sys.Date()`"
 author: "Edyta Adamska, Julia Bakalarz, Paulina Kotlewska"
 output:

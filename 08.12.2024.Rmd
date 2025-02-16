@@ -530,6 +530,43 @@ ggplot(sklep_rowerowy, aes(x = factor(cars), fill = purchased_bike)) +
 #Wniosek: Na podstawie wykresu można zauważyć, że wraz ze wzrostem liczby samochodów w gospodarstwie domowym maleje prawdopodobieństwo posiadania roweru. Najwięcej osób posiadających rowery znajduje się w grupach posiadających 0–2 samochody. Z kolei największa liczba osób, które nie posiadają roweru (około 220), to właściciele dwóch aut.
 
 
+# Test t-Studenta: różnice w dochodach w zależności od zakupu roweru
+```{r}
+sklep_rowerowy <- sklep_rowerowy %>% filter(!is.na(income), !is.na(purchased_bike))
+t_test_result <- t.test(income ~ purchased_bike, data = sklep_rowerowy)
+print(t_test_result)
+
+if (t_test_result$p.value < 0.05) {
+  print("Istnieje statystycznie istotna różnica w dochodach między osobami, które kupiły rower, a tymi, które go nie kupiły.")
+} else {
+  print("Nie stwierdzono istotnej różnicy w dochodach między osobami, które kupiły rower, a tymi, które go nie kupiły.")
+}
+```
+# Test chi-kwadrat: zależność między płcią a zakupem roweru
+```{r}
+gender_bike_table <- table(sklep_rowerowy$gender, sklep_rowerowy$purchased_bike)
+chi_sq_result <- chisq.test(gender_bike_table)
+print(chi_sq_result)
+
+if (chi_sq_result$p.value < 0.05) {
+  print("Istnieje statystycznie istotna zależność między płcią a zakupem roweru.")
+} else {
+  print("Nie stwierdzono istotnej zależności między płcią a zakupem roweru.")
+}
+```
+
+# ANOVA: różnice wieku w zależności od poziomu wykształcenia
+```{r}
+anova_result <- aov(age ~ education, data = sklep_rowerowy)
+summary(anova_result)
+
+if (anova_summary[[1]][["Pr(>F)"]][1] < 0.1) {
+  print("Istnieje statystycznie istotna różnica w średnim wieku w zależności od poziomu wykształcenia na poziomie 10%.")
+} else {
+  print("Nie stwierdzono istotnych różnic w średnim wieku w zależności od poziomu wykształcenia.")
+}
+```
+
 ## 5. Wnioskowanie statystyczne projektu
 
 # Analiza struktury danych: Pierwszym krokiem było sprawdzenie struktury zbioru danych. Dane składają się z różnych cech demograficznych i ekonomicznych klientów, takich jak wiek, dochód, liczba dzieci, wykształcenie, czy posiadanie domu. Kolumny zawierają zarówno zmienne numeryczne, jak i kategoryczne.

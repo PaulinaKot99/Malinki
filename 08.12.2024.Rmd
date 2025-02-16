@@ -51,7 +51,25 @@ library(validate)
 
 ```{r}
 str(sklep_rowerowy)
+
+typy_danych <- sapply(sklep_rowerowy,class)
+
+print(typy_danych)
 ```
+# Opis zmiennych
+# id (numeric) – Unikalny identyfikator klienta.
+# marital_status (character) – Status cywilny klienta (np. "Single", "Married").
+# gender (character) – Płeć klienta (np. "Male", "Female").
+# income (numeric) – Dochód klienta w jednostkach walutowych.
+# children (numeric) – Liczba dzieci klienta.
+# education (character) – Poziom wykształcenia klienta (np. "Bachelors", "PhD").
+# occupation (character) – Zawód lub sektor, w którym pracuje klient (np. "Engineer", "Doctor").
+# home_owner (character) – Informacja, czy klient jest właścicielem domu (np. "Yes", "No").
+# cars (numeric) – Liczba samochodów posiadanych przez klienta.
+# commute_distance (character) – Typowa odległość dojazdu do pracy (np. "0-1 Miles", "10+ Miles").
+# region (character) – Region zamieszkania klienta (np. "Europe", "North America").
+# age (numeric) – Wiek klienta.
+# purchased_bike (character) – Informacja, czy klient kupił rower ("Yes", "No").
 
 #  Analiza braków danych 
 # Wykorzystując pakiet "naniar" ustalamy czy w wśród naszych danych znajdują się braki danych. 
@@ -460,8 +478,9 @@ ggplot(df_pie, aes(x = "", y = percentage, fill = purchased_bike)) +
 ```{r}
 library(ggplot2)
 library(dplyr)
-install.packages("ggmosaic")
-library(ggmosaic)  # Dla wykresu mozaikowego
+if(!require("ggmosaic")) install.packages("ggmosaic") 
+library(ggmosaic)
+# Dla wykresu mozaikowego
 
 
 ggplot(sklep_rowerowy, aes(x = occupation, fill = purchased_bike)) +
